@@ -1352,29 +1352,16 @@ void decode_one_slice(struct img_par *img, struct inp_par *inp)
 #ifdef MY_SECRET
 		if (SecretPosition < 10)
 		{
-			int* zScan = malloc(sizeof(int) * 16);
-			ReverseFromLevelRun(zScan, &(img->cofAC[4][0][0]), &(img->cofAC[4][0][1]), 16);
-			int breakFlg = 0;
-			int sPosition = -1;
-			for (int i = 15; i > -1; i--)
+			int* tarray = &(img->cofAC[1][1][0]);
+			int sPosition = GetLastNonZeroPosition(tarray, 16);
+			if (sPosition > -1)
 			{
-				if (zScan[i] != 0)
-				{
-					sPosition = i;
-					breakFlg = 1;
-					break;
-				}
-			}
-			if (breakFlg)
-			{
-				int secretbit = zScan[sPosition];
-				if (secretbit % 2 == 0)
-					*(SecretBinaryBitStream + SecretPosition) = '0';
+				if (tarray[sPosition] % 2 == 0)
+					SecretBinaryBitStream[SecretPosition] = '0';
 				else
-					*(SecretBinaryBitStream + SecretPosition) = '1';
+					SecretBinaryBitStream[SecretPosition] = '1';
 				SecretPosition++;
 			}
-			free(zScan);
 		}
 #endif
 
@@ -1722,5 +1709,17 @@ void MyIndexConvert(int* fD, int* sD, int direction)
 		*fD = rowNum;
 		*sD = colNum;
 	}
+}
+int GetLastNonZeroPosition(int* tarray, int size)
+{
+	int buff = -1;
+	for (int i = 0; i < size; i++)
+	{
+		if (tarray[i] != 0)
+			buff = i;
+		else
+			break;
+	}
+	return buff;
 }
 #endif

@@ -1,22 +1,20 @@
-﻿生成启动时间为 2018/8/18 10:48:13。
+﻿生成启动时间为 2018/8/20 16:06:47。
      1>项目“D:\files\JM_Code_8.6\jm8.6_annotation\jm8.6final\JM\ldecod.vcxproj”在节点 2 上(Build 个目标)。
      1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(363,5): warning MSB8004: Intermediate Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Intermediate Directory.
      1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(364,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
      1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(388,5): warning MSB8028: The intermediate directory (.\bin\) contains files shared from another project (lencod.vcxproj).  This can lead to incorrect clean and rebuild behavior.
      1>ClCompile:
-         D:\software\Visual2013\VC\bin\CL.exe /c /Ildecod/inc /Ilcommon/inc /Zi /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _VC80_UPGRADE=0x0600 /D _MBCS /Gm- /EHsc /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo".\ldecod/Debug/" /Fd".\ldecod/Debug/vc120.pdb" /FR".\bin\\" /Gd /TC /analyze- /errorReport:prompt ldecod\src\macroblock.c
-         macroblock.c
+         D:\software\Visual2013\VC\bin\CL.exe /c /Ildecod/inc /Ilcommon/inc /Zi /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _VC80_UPGRADE=0x0600 /D _MBCS /Gm- /EHsc /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo".\ldecod/Debug/" /Fd".\ldecod/Debug/vc120.pdb" /FR".\bin\\" /Gd /TC /analyze- /errorReport:prompt ldecod\src\image.c
+         image.c
      1>D:\files\JM_Code_8.6\jm8.6_annotation\jm8.6final\JM\ldecod\inc\contributors.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
-     1>ldecod\src\macroblock.c(2228): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 D:\software\Visual2013\VC\include\stdio.h(356) : 参见“sprintf”的声明
-     1>ldecod\src\macroblock.c(2240): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 D:\software\Visual2013\VC\include\stdio.h(356) : 参见“sprintf”的声明
-     1>ldecod\src\macroblock.c(2245): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 D:\software\Visual2013\VC\include\stdio.h(356) : 参见“sprintf”的声明
-     1>ldecod\src\macroblock.c(2253): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 D:\software\Visual2013\VC\include\stdio.h(356) : 参见“sprintf”的声明
-     1>ldecod\src\macroblock.c(2266): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 D:\software\Visual2013\VC\include\stdio.h(356) : 参见“sprintf”的声明
+     1>ldecod\src\image.c(203): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 D:\software\Visual2013\VC\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>ldecod\src\image.c(861): warning C4996: '_ftime64': This function or variable may be unsafe. Consider using _ftime64_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 D:\software\Visual2013\VC\include\sys/timeb.h(131) : 参见“_ftime64”的声明
+     1>ldecod\src\image.c(1063): warning C4996: '_ftime64': This function or variable may be unsafe. Consider using _ftime64_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 D:\software\Visual2013\VC\include\sys/timeb.h(131) : 参见“_ftime64”的声明
+     1>ldecod\src\image.c(1070): warning C4244: “=”: 从“time_t”转换到“int”，可能丢失数据
+     1>ldecod\src\image.c(1355): warning C4047: “初始化”:“int *”与“int (*)[16]”的间接级别不同
        Link:
          D:\software\Visual2013\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"./bin/ldecod.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:".\ldecod/Debug/ldecod.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:".\bin\ldecod.lib" /MACHINE:X86 /SAFESEH .\ldecod/Debug/annexb.obj
          .\ldecod/Debug/biaridecod.obj
@@ -49,8 +47,10 @@
          .\ldecod/Debug/sei.obj
          .\ldecod/Debug/vlc.obj
          ldecod.vcxproj -> D:\files\JM_Code_8.6\jm8.6_annotation\jm8.6final\JM\.\bin\ldecod.exe
+       BscMake:
+         D:\software\Visual2013\VC\bin\bscmake.exe /nologo /o".\ldecod/Debug/ldecod.bsc" .\bin\annexb.sbr .\bin\biaridecod.sbr .\bin\block.sbr .\bin\cabac.sbr .\bin\context_ini.sbr .\bin\erc_api.sbr .\bin\erc_do_i.sbr .\bin\erc_do_p.sbr .\bin\errorconcealment.sbr .\bin\filehandle.sbr .\bin\fmo.sbr .\bin\header.sbr .\bin\image.sbr .\bin\ldecod.sbr .\bin\leaky_bucket.sbr .\bin\loopFilter.sbr .\bin\macroblock.sbr .\bin\mbuffer.sbr .\bin\mb_access.sbr .\bin\memalloc.sbr .\bin\nal.sbr .\bin\nalu.sbr .\bin\nalucommon.sbr .\bin\nal_part.sbr .\bin\output.sbr .\bin\parset.sbr .\bin\parsetcommon.sbr .\bin\rtp.sbr .\bin\sei.sbr .\bin\vlc.sbr
      1>已完成生成项目“D:\files\JM_Code_8.6\jm8.6_annotation\jm8.6final\JM\ldecod.vcxproj”(Build 个目标)的操作。
 
 生成成功。
 
-已用时间 00:00:01.29
+已用时间 00:00:00.82

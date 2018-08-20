@@ -1205,6 +1205,8 @@ void ReverseFromLevelRun(int zScan, int* Level, int* Run, int size);
 //direction为1时将坐标模式转换为 block8 block4 level/run scan_pos模式
 //direction为0时将坐标模式转换为 行 列 level/run scan_pos模式
 void MyIndexConvert(int* fD, int* sD, int direction);
+
+int GetLastNonZeroPosition(int* tarray, int size);	//返回从左边开始的最后一个非零元
 #endif
 
 #include "context_ini.h"

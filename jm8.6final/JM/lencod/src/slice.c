@@ -338,7 +338,7 @@ int encode_one_slice(int SliceGroupId, Picture *pic)
 			//}
 			if (SecretPosition < 10)
 			{
-				int testArray[6][4][2][16];
+				/*int testArray[6][4][2][16];
 				for (int i = 0; i < 6; i++)
 				{
 					for (int ii = 0; ii < 4; ii++)
@@ -352,108 +352,36 @@ int encode_one_slice(int SliceGroupId, Picture *pic)
 							testArray[row][col][1][iii] = img->cofAC[i][ii][0][iii];
 						}
 					}
-				}
+				}*/
 				char secretCh = *(SecretBinaryBitStream + SecretPosition);
 				SecretPosition++;
 
-				//获取当前宏块数据
-				//Macroblock* currMB = &img->mb_data[CurrentMbAddr];
 				int tlevel[16];
-				int trun[16];
-				int zScan[16];
 				for (int i = 0; i < 16; i++)
-				{
-					tlevel[i] = img->cofAC[4][0][0][i];
-					trun[i] = img->cofAC[4][0][1][i];
-				}
+					tlevel[i] = img->cofAC[0][3][0][i];
 
-				//通过level和run还原scan数据
-				int zNum = 0;
-				for (int i = 0, ScanPosition = 0; i < 16; i++)
+				
+				int secretPosition = GetLastNonZeroPosition(tlevel, 16);
+				if (secretPosition != -1 && ((secretCh == '0'&&abs(tlevel[secretPosition] % 2) == 1) || (secretCh == '1'&&tlevel[secretPosition] % 2 == 0)))
 				{
-					zNum = trun[i];
-					for (int j = 0; j < zNum; j++)
+					if (tlevel[secretPosition] >= 0)
 					{
-						if (ScanPosition + j < 16)
-						{
-							zScan[ScanPosition + j] = 0;
-						}
+						if (tlevel[secretPosition] > 128)
+							tlevel[secretPosition]--;
 						else
-						{
-							printf("ScanPosition越界");
-						}
-					}
-					ScanPosition += zNum;
-					if (ScanPosition < 16)
-					{
-						zScan[ScanPosition] = tlevel[i];
-						ScanPosition++;
+							tlevel[secretPosition]++;
 					}
 					else
 					{
-						printf("ScanPosition越界");
-					}
-					if (ScanPosition == 16)
-						break;
-				}
-
-				int secretPosition = 0;
-				//寻找最后一个非零位
-				for (int i = 15; i > -1; i--)
-				{
-					if (zScan[i] != 0)
-					{
-						secretPosition = i;
-						break;
-					}
-					if (i == 0)
-						if (zScan[0] == 0)
-							secretPosition = -1;
+						if (tlevel[secretPosition] < -128)
+							tlevel[secretPosition]++;
 						else
-							secretPosition = 0;
-					
-				}
-				if (secretPosition != -1 && ((secretCh == '0'&&abs(zScan[secretPosition] % 2) == 1) || (secretCh == '1'&&zScan[secretPosition] % 2 == 0)))
-				{
-					if (zScan[secretPosition] > 128)
-						zScan[secretPosition]--;
-					else
-						zScan[secretPosition]++;
-					for (int i = 0, ScanPosition = 0; i < 16; i++)
-					{
-						if (zScan[ScanPosition] != 0)
-						{
-							tlevel[i] = zScan[ScanPosition];
-							trun[i] = 0;
-							ScanPosition++;
-						}
-						else
-						{
-							int newPosition = findNZeroPosition(zScan, 16, ScanPosition);
-							if (newPosition == 16)		//末尾全是0
-							{
-								for (; i < 16; i++)
-								{
-									tlevel[i] = 0;
-									trun[i] = 0;
-								}
-								break;
-							}
-							else
-							{
-								tlevel[i] = zScan[newPosition];
-								trun[i] = newPosition - ScanPosition;
-								ScanPosition = newPosition + 1;
-							}
-						}
+							tlevel[secretPosition]--;
 					}
 
-					//将修改过的level和run写回系数表中
+					//将修改后的level写回原数组中
 					for (int i = 0; i < 16; i++)
-					{
-						img->cofAC[4][0][0][i] = tlevel[i];
-						img->cofAC[4][0][1][i] = trun[i];
-					}
+						img->cofAC[0][3][0][i] = tlevel[i];
 				}
 				else if (secretPosition == -1)
 				{
@@ -809,6 +737,18 @@ void MyIndexConvert(int* fD, int* sD, int direction)
 		*fD = rowNum;
 		*sD = colNum;
 	}
+}
+int GetLastNonZeroPosition(int* tarray, int size)
+{
+	int buff = -1;
+	for (int i = 0; i < size; i++)
+	{
+		if (tarray[i] != 0)
+			buff = i;
+		else
+			break;
+	}
+	return buff;
 }
 /*!
  ************************************************************************

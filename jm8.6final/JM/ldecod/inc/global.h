@@ -738,4 +738,7 @@ void ReverseFromLevelRun(int* zScan, int* Level, int* Run, int size);
 //direction为0时将坐标模式转换为 行 列 level/run scan_pos模式
 void MyIndexConvert(int* fD, int* sD, int direction);
 
+//返回数组中从左边起的最后一个非零元的位置，-1代表数组全为0
+int GetLastNonZeroPosition(int* tarray, int size);
+
 #endif

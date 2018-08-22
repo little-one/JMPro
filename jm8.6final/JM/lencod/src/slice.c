@@ -57,8 +57,7 @@
 #include "mbuffer.h"
 
 // Local declarations
-#ifndef MY_SECRET
-#define MY_SECRET
+#ifdef MY_SECRET_ENCODE
 extern char* SecretBinaryBitStream;
 extern int SecretPosition;
 #endif
@@ -293,7 +292,7 @@ int encode_one_slice(int SliceGroupId, Picture *pic)
 			//编码一个宏块
 			encode_one_macroblock();
 
-#ifdef MY_SECRET
+#ifdef MY_SECRET_ENCODE
 			//if (SecretPosition == 0)
 			//{
 			//	int tlevel[16], trun[16];
@@ -600,6 +599,7 @@ int encode_one_slice(int SliceGroupId, Picture *pic)
 	return NumberOfCodedMBs;
 }
 
+#ifdef MY_SECRET_ENCODE
 void ZigzagScanConvert(int* OneDimensionalArray, int** TwoDimensionalArray, int width, int direction)
 {
 	//通过公式求出和为 x-1 的位置共有 width - | width - x | ，即横纵坐标和为0的位置有1个，横纵坐标和为1的位置有2个
@@ -750,6 +750,7 @@ int GetLastNonZeroPosition(int* tarray, int size)
 	}
 	return buff;
 }
+#endif
 /*!
  ************************************************************************
  * \brief

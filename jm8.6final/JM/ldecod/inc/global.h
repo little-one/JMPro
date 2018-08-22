@@ -50,6 +50,8 @@ typedef unsigned int    u_int32;
 # define INT64_MIN        (-9223372036854775807LL - 1LL)
 #endif
 
+#define MY_SECRET_DECODE
+#define MY_SAVE_DQCT			
 
 pic_parameter_set_rbsp_t *active_pps;
 seq_parameter_set_rbsp_t *active_sps;

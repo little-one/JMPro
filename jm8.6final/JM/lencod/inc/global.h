@@ -63,6 +63,8 @@ typedef long long int64;
 # define INT64_MIN        (-9223372036854775807LL - 1LL)
 #endif
 
+#define MY_SECRET_ENCODE
+
 
 /***********************************************************************
  * T y p e    d e f i n i t i o n s    f o r    T M L
@@ -1079,7 +1081,7 @@ Picture *malloc_picture();
 void     free_picture(Picture *pic);
 
 int   encode_one_slice(int SLiceGroupId, Picture *pic);   //! returns the number of MBs in the slice
-int findNZeroPosition(int* ScanArray, int ArraySize, int currPosition);		//递归寻找ScanArray数组中从currPosition位置开始之后的第一个非零元的位置并返回
+
 
 
 void  start_macroblock(int mb_addr, int mb_field);
@@ -1191,6 +1193,7 @@ void modify_redundant_pic_cnt(unsigned char *streamBuffer);
 int BlockMotionSearch(int, int, int, int, int, int, double);
 void encode_one_macroblock(void);
 
+#ifdef MY_SECRET_ENCODE
 /**************************************************************************
 *函数功能: 通过Zigzag扫描序列将二维方阵转成一维或者将一维数组还原为二维方阵  *
 *width:   二维方阵的边长                                                   *
@@ -1200,6 +1203,7 @@ void ZigzagScanConvert(int* OneDimensionalArray, int** TwoDimensionalArray, int 
 int** MallocTwoDimensionArray(int size_x, int size_y);
 void FreeTwoDimensionArray(int** Array, int xSize);
 void ReverseFromLevelRun(int zScan, int* Level, int* Run, int size);
+int findNZeroPosition(int* ScanArray, int ArraySize, int currPosition);		//递归寻找ScanArray数组中从currPosition位置开始之后的第一个非零元的位置并返回
 
 //四维数组的转换函数
 //direction为1时将坐标模式转换为 block8 block4 level/run scan_pos模式
@@ -1207,6 +1211,8 @@ void ReverseFromLevelRun(int zScan, int* Level, int* Run, int size);
 void MyIndexConvert(int* fD, int* sD, int direction);
 
 int GetLastNonZeroPosition(int* tarray, int size);	//返回从左边开始的最后一个非零元
+#endif
+
 #endif
 
 #include "context_ini.h"

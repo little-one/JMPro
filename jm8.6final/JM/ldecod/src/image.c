@@ -68,8 +68,7 @@ StorablePicture *dec_picture;
 
 OldSliceParams old_slice;
 
-#ifndef MY_SECRET
-#define MY_SECRET
+#ifdef MY_SECRET_DECODE
 extern char* SecretBinaryBitStream;
 extern int SecretPosition;
 #endif
@@ -1349,7 +1348,7 @@ void decode_one_slice(struct img_par *img, struct inp_par *inp)
 		// Get the syntax elements from the NAL
 		read_flag = read_one_macroblock(img, inp);
 
-#ifdef MY_SECRET
+#ifdef MY_SECRET_DECODE
 		if (SecretPosition < 10)
 		{
 			int* tarray = &(img->cofAC[1][1][0]);
@@ -1581,7 +1580,7 @@ void fill_wp_params(struct img_par *img)
 	}
 }
 
-#ifdef MY_SECRET
+#ifdef MY_SECRET_DECODE
 void ZigzagScanConvert(int* OneDimensionalArray, int** TwoDimensionalArray, int width, int direction)
 {
 	//通过公式求出和为 x-1 的位置共有 width - | width - x | ，即横纵坐标和为0的位置有1个，横纵坐标和为1的位置有2个

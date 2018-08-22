@@ -49,9 +49,6 @@ extern ColocatedParams *Co_located;
 
 
 
-#ifndef MY_SAVE_DQCT
-#define MY_SAVE_DQCT
-#endif
 //#undef MY_SECRET
 //#undef MY_SAVE_DQCT
 

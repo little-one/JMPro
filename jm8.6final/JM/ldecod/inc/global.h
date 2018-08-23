@@ -49,9 +49,10 @@ typedef unsigned int    u_int32;
   typedef long long int64;
 # define INT64_MIN        (-9223372036854775807LL - 1LL)
 #endif
-
+#ifndef MY_SECRET_DECODE
 #define MY_SECRET_DECODE
-#define MY_SAVE_DQCT			
+  int Decode_EmbedCodeFlg;
+#endif
 
 pic_parameter_set_rbsp_t *active_pps;
 seq_parameter_set_rbsp_t *active_sps;

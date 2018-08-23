@@ -2712,14 +2712,17 @@ void readCBPandCoeffsFromNAL(struct img_par *img, struct inp_par *inp)
 									levarr, runarr, &numcoeff);
 								start_scan = 0;
 							}
-#ifdef MY_SAVE_DQCT
-							int my_b4 = (j - block_y) * 2 + (i - block_x);
-							for (int tk = 0; tk < 16; tk++)
+#ifdef MY_SECRET_DECODE
+							if (Decode_EmbedCodeFlg)
 							{
-								//img->cofAC[b8][my_b4][0][tk] = levarr[tk];
-								//img->cofAC[b8][my_b4][1][tk] = runarr[tk];
-								img->cofAC[j][i][0][tk] = levarr[tk];
-								img->cofAC[j][i][1][tk] = runarr[tk];
+								int my_b4 = (j - block_y) * 2 + (i - block_x);
+								for (int tk = 0; tk < 16; tk++)
+								{
+									//img->cofAC[b8][my_b4][0][tk] = levarr[tk];
+									//img->cofAC[b8][my_b4][1][tk] = runarr[tk];
+									img->cofAC[j][i][0][tk] = levarr[tk];
+									img->cofAC[j][i][1][tk] = runarr[tk];
+								}
 							}
 #endif
 							coef_ctr = start_scan - 1;
@@ -2746,13 +2749,16 @@ void readCBPandCoeffsFromNAL(struct img_par *img, struct inp_par *inp)
 						else
 						{
 							img->nz_coeff[img->current_mb_nr][i][j] = 0;
-#ifdef MY_SAVE_DQCT
-							for (int tj = 0; tj < 4; tj++)
+#ifdef MY_SECRET_DECODE
+							if (Decode_EmbedCodeFlg)
 							{
-								for (int ti = 0; ti < 16; ti++)
+								for (int tj = 0; tj < 4; tj++)
 								{
-									img->cofAC[j][i][0][ti] = 0;
-									img->cofAC[j][i][1][ti] = 0;
+									for (int ti = 0; ti < 16; ti++)
+									{
+										img->cofAC[j][i][0][ti] = 0;
+										img->cofAC[j][i][1][ti] = 0;
+									}
 								}
 							}
 #endif
@@ -2955,15 +2961,18 @@ void readCBPandCoeffsFromNAL(struct img_par *img, struct inp_par *inp)
 						coef_ctr = 0;
 						level = 1;
 						uv++;
-#ifdef MY_SAVE_DQCT
-						int my_b8 = 4 + i / 2;
-						int my_b4 = j - 4 + i % 2;
-						for (int tk = 0; tk < 16; tk++)
+#ifdef MY_SECRET_DECODE
+						if (Decode_EmbedCodeFlg)
 						{
-							/*img->cofAC[my_b8][my_b4][0][tk] = levarr[tk];
-							img->cofAC[my_b8][my_b4][1][tk] = runarr[tk];*/
-							img->cofAC[j][i][0][tk] = levarr[tk];
-							img->cofAC[j][i][1][tk] = runarr[tk];
+							int my_b8 = 4 + i / 2;
+							int my_b4 = j - 4 + i % 2;
+							for (int tk = 0; tk < 16; tk++)
+							{
+								/*img->cofAC[my_b8][my_b4][0][tk] = levarr[tk];
+								img->cofAC[my_b8][my_b4][1][tk] = runarr[tk];*/
+								img->cofAC[j][i][0][tk] = levarr[tk];
+								img->cofAC[j][i][1][tk] = runarr[tk];
+							}
 						}
 #endif
 						for (k = 0; k < numcoeff; k++)

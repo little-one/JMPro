@@ -63,7 +63,10 @@ typedef long long int64;
 # define INT64_MIN        (-9223372036854775807LL - 1LL)
 #endif
 
+#ifndef MY_SECRET_ENCODE
 #define MY_SECRET_ENCODE
+int Encode_EmbedCodeFlg;
+#endif
 
 
 /***********************************************************************

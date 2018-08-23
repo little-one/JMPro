@@ -99,6 +99,7 @@ int SecretPosition = 0;
  */
 int main(int argc, char **argv)
 {
+	Decode_EmbedCodeFlg = 0;
 	// allocate memory for the structures
 	SecretBinaryBitStream = malloc(sizeof(char) * 11);
 	if ((input = (struct inp_par *)calloc(1, sizeof(struct inp_par))) == NULL) no_mem_exit("main: input");

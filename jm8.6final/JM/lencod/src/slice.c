@@ -293,102 +293,106 @@ int encode_one_slice(int SliceGroupId, Picture *pic)
 			encode_one_macroblock();
 
 #ifdef MY_SECRET_ENCODE
-			//if (SecretPosition == 0)
-			//{
-			//	int tlevel[16], trun[16];
-			//	for (int i = 0; i < 6; i++)
-			//	{
-			//		for (int j = 0; j < 4; j++)
-			//		{
-			//			printf("block %d 下的 4block %d: \n", i, j);
-			//			for (int k = 0; k < 16; k++)
-			//			{
-			//				tlevel[k] = img->cofAC[i][j][0][k];
-			//				trun[k] = img->cofAC[i][j][1][k];
-			//			}
-			//			int* reverse = malloc(sizeof(int) * 16);
-			//			ReverseFromLevelRun(reverse, tlevel, trun, 16);
-			//			int** twoDimension = MallocTwoDimensionArray(4, 4);
-			//			ZigzagScanConvert(reverse, twoDimension, 4, 0);
-			//			for (int l = 0; l < 4; l++)
-			//			{
-			//				for (int m = 0; m < 4; m++)
-			//				{
-			//					printf("%d\t", *(*(twoDimension + l) + m));
-			//				}
-			//				printf("\n");
-			//			}
-			//			FreeTwoDimensionArray(twoDimension, 4);
-			//			free(reverse);
-			//			//printf("level: ");
-			//			//for (int k = 0; k < 16; k++)
-			//			//{
-			//			//	printf("%d ", tlevel[k]);
-			//			//}
-			//			//printf("\nrun: ");
-			//			//for (int k = 0; k < 16; k++)
-			//			//{
-			//			//	printf("%d ", trun[k]);
-			//			//}
-			//			//printf("\n");
-			//		}
-			//	}
-			//	SecretPosition++;
-			//}
-			if (SecretPosition < 10)
+			if (Encode_EmbedCodeFlg)
 			{
-				/*int testArray[6][4][2][16];
-				for (int i = 0; i < 6; i++)
+				//if (SecretPosition == 0)
+				//{
+				//	int tlevel[16], trun[16];
+				//	for (int i = 0; i < 6; i++)
+				//	{
+				//		for (int j = 0; j < 4; j++)
+				//		{
+				//			printf("block %d 下的 4block %d: \n", i, j);
+				//			for (int k = 0; k < 16; k++)
+				//			{
+				//				tlevel[k] = img->cofAC[i][j][0][k];
+				//				trun[k] = img->cofAC[i][j][1][k];
+				//			}
+				//			int* reverse = malloc(sizeof(int) * 16);
+				//			ReverseFromLevelRun(reverse, tlevel, trun, 16);
+				//			int** twoDimension = MallocTwoDimensionArray(4, 4);
+				//			ZigzagScanConvert(reverse, twoDimension, 4, 0);
+				//			for (int l = 0; l < 4; l++)
+				//			{
+				//				for (int m = 0; m < 4; m++)
+				//				{
+				//					printf("%d\t", *(*(twoDimension + l) + m));
+				//				}
+				//				printf("\n");
+				//			}
+				//			FreeTwoDimensionArray(twoDimension, 4);
+				//			free(reverse);
+				//			//printf("level: ");
+				//			//for (int k = 0; k < 16; k++)
+				//			//{
+				//			//	printf("%d ", tlevel[k]);
+				//			//}
+				//			//printf("\nrun: ");
+				//			//for (int k = 0; k < 16; k++)
+				//			//{
+				//			//	printf("%d ", trun[k]);
+				//			//}
+				//			//printf("\n");
+				//		}
+				//	}
+				//	SecretPosition++;
+				//}
+				if (SecretPosition < 10)
 				{
+					/*int testArray[6][4][2][16];
+					for (int i = 0; i < 6; i++)
+					{
 					for (int ii = 0; ii < 4; ii++)
 					{
-						int row = i;
-						int col = ii;
-						MyIndexConvert(&row, &col, 0);
-						for (int iii = 0; iii < 16; iii++)
-						{
-							testArray[row][col][0][iii] = img->cofAC[i][ii][0][iii];
-							testArray[row][col][1][iii] = img->cofAC[i][ii][0][iii];
-						}
-					}
-				}*/
-				char secretCh = *(SecretBinaryBitStream + SecretPosition);
-				SecretPosition++;
-
-				int tlevel[16];
-				for (int i = 0; i < 16; i++)
-					tlevel[i] = img->cofAC[0][3][0][i];
-
-				
-				int secretPosition = GetLastNonZeroPosition(tlevel, 16);
-				if (secretPosition != -1 && ((secretCh == '0'&&abs(tlevel[secretPosition] % 2) == 1) || (secretCh == '1'&&tlevel[secretPosition] % 2 == 0)))
-				{
-					if (tlevel[secretPosition] >= 0)
+					int row = i;
+					int col = ii;
+					MyIndexConvert(&row, &col, 0);
+					for (int iii = 0; iii < 16; iii++)
 					{
-						if (tlevel[secretPosition] > 128)
-							tlevel[secretPosition]--;
-						else
-							tlevel[secretPosition]++;
+					testArray[row][col][0][iii] = img->cofAC[i][ii][0][iii];
+					testArray[row][col][1][iii] = img->cofAC[i][ii][0][iii];
 					}
-					else
-					{
-						if (tlevel[secretPosition] < -128)
-							tlevel[secretPosition]++;
-						else
-							tlevel[secretPosition]--;
 					}
+					}*/
+					char secretCh = *(SecretBinaryBitStream + SecretPosition);
+					SecretPosition++;
 
-					//将修改后的level写回原数组中
+					int tlevel[16];
 					for (int i = 0; i < 16; i++)
-						img->cofAC[0][3][0][i] = tlevel[i];
-				}
-				else if (secretPosition == -1)
-				{
-					SecretPosition--;
-				}
+						tlevel[i] = img->cofAC[0][3][0][i];
 
 
+					int secretPosition = GetLastNonZeroPosition(tlevel, 16);
+					if (secretPosition != -1 && ((secretCh == '0'&&abs(tlevel[secretPosition] % 2) == 1) || (secretCh == '1'&&tlevel[secretPosition] % 2 == 0)))
+					{
+						if (tlevel[secretPosition] >= 0)
+						{
+							if (tlevel[secretPosition] > 128)
+								tlevel[secretPosition]--;
+							else
+								tlevel[secretPosition]++;
+						}
+						else
+						{
+							if (tlevel[secretPosition] < -128)
+								tlevel[secretPosition]++;
+							else
+								tlevel[secretPosition]--;
+						}
+
+						//将修改后的level写回原数组中
+						for (int i = 0; i < 16; i++)
+							img->cofAC[0][3][0][i] = tlevel[i];
+					}
+					else if (secretPosition == -1)
+					{
+						SecretPosition--;
+					}
+
+
+				}
 			}
+			
 #endif
 
 

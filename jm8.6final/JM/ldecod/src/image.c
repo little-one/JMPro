@@ -1349,17 +1349,20 @@ void decode_one_slice(struct img_par *img, struct inp_par *inp)
 		read_flag = read_one_macroblock(img, inp);
 
 #ifdef MY_SECRET_DECODE
-		if (SecretPosition < 10)
+		if (Decode_EmbedCodeFlg)
 		{
-			int* tarray = &(img->cofAC[1][1][0]);
-			int sPosition = GetLastNonZeroPosition(tarray, 16);
-			if (sPosition > -1)
+			if (SecretPosition < 10)
 			{
-				if (tarray[sPosition] % 2 == 0)
-					SecretBinaryBitStream[SecretPosition] = '0';
-				else
-					SecretBinaryBitStream[SecretPosition] = '1';
-				SecretPosition++;
+				int* tarray = &(img->cofAC[1][1][0]);
+				int sPosition = GetLastNonZeroPosition(tarray, 16);
+				if (sPosition > -1)
+				{
+					if (tarray[sPosition] % 2 == 0)
+						SecretBinaryBitStream[SecretPosition] = '0';
+					else
+						SecretBinaryBitStream[SecretPosition] = '1';
+					SecretPosition++;
+				}
 			}
 		}
 #endif

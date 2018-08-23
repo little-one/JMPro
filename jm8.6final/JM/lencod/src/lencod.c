@@ -88,8 +88,9 @@ StatParameters  stats, *stat = &stats;
 SNRParameters   snrs, *snr = &snrs;
 Decoders decoders, *decs = &decoders;
 
-char* SecretBinaryBitStream = NULL;
-int SecretPosition = 0;
+char* SecretBinaryBitStream;
+int SecretPosition;
+int SecretBitNum;
 
 #ifdef _ADAPT_LAST_GROUP_
 int initial_Bframes = 0;
@@ -119,10 +120,12 @@ void Clear_Motion_Search_Module();
  */
 int main(int argc, char **argv)
 {
+	SecretPosition = 0;
+	SecretBitNum = 10;
+	SecretBinaryBitStream = (char*)malloc(sizeof(char)*SecretBitNum);
 	//#undef MY_SECRET_ENCODE
-	Encode_EmbedCodeFlg = 0;
-	SecretBinaryBitStream = malloc(sizeof(char) * 11);
-	for (int i = 0; i < 10; i++)
+	Encode_EmbedCodeFlg = 1;
+	for (int i = 0; i < SecretBitNum; i++)
 	{
 		*(SecretBinaryBitStream + i) = '0' + rand(i) % 2;
 	}
@@ -405,6 +408,8 @@ int main(int argc, char **argv)
 
 	int a = 0;
 	scanf_s("%d", &a);
+
+	free(SecretBinaryBitStream);
 
 	return 0;                         //encode JM73_FME version
 }

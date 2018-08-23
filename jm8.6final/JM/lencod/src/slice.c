@@ -60,6 +60,7 @@
 #ifdef MY_SECRET_ENCODE
 extern char* SecretBinaryBitStream;
 extern int SecretPosition;
+extern int SecretBitNum;
 #endif
 
 //#undef MY_SECRET
@@ -295,101 +296,136 @@ int encode_one_slice(int SliceGroupId, Picture *pic)
 #ifdef MY_SECRET_ENCODE
 			if (Encode_EmbedCodeFlg)
 			{
-				//if (SecretPosition == 0)
-				//{
-				//	int tlevel[16], trun[16];
-				//	for (int i = 0; i < 6; i++)
-				//	{
-				//		for (int j = 0; j < 4; j++)
-				//		{
-				//			printf("block %d 下的 4block %d: \n", i, j);
-				//			for (int k = 0; k < 16; k++)
-				//			{
-				//				tlevel[k] = img->cofAC[i][j][0][k];
-				//				trun[k] = img->cofAC[i][j][1][k];
-				//			}
-				//			int* reverse = malloc(sizeof(int) * 16);
-				//			ReverseFromLevelRun(reverse, tlevel, trun, 16);
-				//			int** twoDimension = MallocTwoDimensionArray(4, 4);
-				//			ZigzagScanConvert(reverse, twoDimension, 4, 0);
-				//			for (int l = 0; l < 4; l++)
-				//			{
-				//				for (int m = 0; m < 4; m++)
-				//				{
-				//					printf("%d\t", *(*(twoDimension + l) + m));
-				//				}
-				//				printf("\n");
-				//			}
-				//			FreeTwoDimensionArray(twoDimension, 4);
-				//			free(reverse);
-				//			//printf("level: ");
-				//			//for (int k = 0; k < 16; k++)
-				//			//{
-				//			//	printf("%d ", tlevel[k]);
-				//			//}
-				//			//printf("\nrun: ");
-				//			//for (int k = 0; k < 16; k++)
-				//			//{
-				//			//	printf("%d ", trun[k]);
-				//			//}
-				//			//printf("\n");
-				//		}
-				//	}
-				//	SecretPosition++;
-				//}
-				if (SecretPosition < 10)
+				if (SecretPosition < SecretBitNum)
 				{
-					/*int testArray[6][4][2][16];
-					for (int i = 0; i < 6; i++)
-					{
-					for (int ii = 0; ii < 4; ii++)
-					{
-					int row = i;
-					int col = ii;
-					MyIndexConvert(&row, &col, 0);
-					for (int iii = 0; iii < 16; iii++)
-					{
-					testArray[row][col][0][iii] = img->cofAC[i][ii][0][iii];
-					testArray[row][col][1][iii] = img->cofAC[i][ii][0][iii];
-					}
-					}
-					}*/
 					char secretCh = *(SecretBinaryBitStream + SecretPosition);
 					SecretPosition++;
 
-					int tlevel[16];
+					//计算左上和右下的8x8块的能量总和,以及右上和左下块的能量总和
+					int LTEnergySum = 0;
+					int LDEnergySum = 0;
+
+					//计算四个4x4块的首个0前的位置并且将能量的绝对值累加
+					int fPosition_0 = 0;
+					int fPosition_1 = 0;
+					int fPosition_2 = 0;
+					int fPosition_3 = 0;
+					int fArray_0[16];
+					int fArray_1[16];
+					int fArray_2[16];
+					int fArray_3[16];
 					for (int i = 0; i < 16; i++)
-						tlevel[i] = img->cofAC[0][3][0][i];
-
-
-					int secretPosition = GetLastNonZeroPosition(tlevel, 16);
-					if (secretPosition != -1 && ((secretCh == '0'&&abs(tlevel[secretPosition] % 2) == 1) || (secretCh == '1'&&tlevel[secretPosition] % 2 == 0)))
 					{
-						if (tlevel[secretPosition] >= 0)
-						{
-							if (tlevel[secretPosition] > 128)
-								tlevel[secretPosition]--;
-							else
-								tlevel[secretPosition]++;
-						}
-						else
-						{
-							if (tlevel[secretPosition] < -128)
-								tlevel[secretPosition]++;
-							else
-								tlevel[secretPosition]--;
-						}
-
-						//将修改后的level写回原数组中
-						for (int i = 0; i < 16; i++)
-							img->cofAC[0][3][0][i] = tlevel[i];
+						fArray_0[i] = img->cofAC[0][0][0][i];
+						fArray_1[i] = img->cofAC[0][1][0][i];
+						fArray_2[i] = img->cofAC[0][2][0][i];
+						fArray_3[i] = img->cofAC[0][3][0][i];
 					}
-					else if (secretPosition == -1)
+					fPosition_0 = GetLastNonZeroPosition(fArray_0, 16);
+					fPosition_1 = GetLastNonZeroPosition(fArray_1, 16);
+					fPosition_2 = GetLastNonZeroPosition(fArray_2, 16);
+					fPosition_3 = GetLastNonZeroPosition(fArray_3, 16);
+
+					for (int i = 0; i < 16; i++)
 					{
+						if (i <= fPosition_0)
+							LTEnergySum += abs(img->cofAC[0][0][0][i]);
+						if (i <= fPosition_3)
+							LTEnergySum += abs(img->cofAC[0][3][0][i]);
+						if (i <= fPosition_1)
+							LDEnergySum += abs(img->cofAC[0][1][0][i]);
+						if (i<=fPosition_2)
+							LDEnergySum += abs(img->cofAC[0][2][0][i]);
+					}
+
+					//比较能量获得该位数据
+					char curData = (LTEnergySum > LDEnergySum) ? '1' : '0';
+					if (secretCh == curData)	//说明数据与密文一致，可以使用该宏块，检测标识位是否可用
+					{
+						//首先检测第4个4x4块是否可用
+						int tLevel[16];
+						for (int i = 0; i < 16; i++)
+							tLevel[i] = img->cofAC[1][3][0][i];
+						int sPosition = GetLastNonZeroPosition(tLevel, 16);
+						if (sPosition != -1)	//说明该4x4块可用，则将标识位嵌入此块
+						{
+							if (tLevel[sPosition] % 2 == 0)
+							{
+								if (tLevel[sPosition] > 0)
+									tLevel[sPosition] -= 1;
+								else
+									tLevel[sPosition] += 1;
+							}
+							//将修改后的level写回原数组中
+							img->cofAC[1][3][0][sPosition] = tLevel[sPosition];
+						}
+						else    //第4块不可用，则检测第3块
+						{
+							for (int i = 0; i < 16; i++)
+								tLevel[i] = img->cofAC[1][2][0][i];
+							sPosition = 0;
+							sPosition = GetLastNonZeroPosition(tLevel, 16);
+							if (sPosition != -1)		//说明第3块可用，将标识嵌入此块
+							{
+								if (tLevel[sPosition] % 2 == 0)
+								{
+									if (tLevel[sPosition] > 0)
+										tLevel[sPosition] -= 1;
+									else
+										tLevel[sPosition] += 1;
+								}
+								//将修改后的level写回原数组中
+								img->cofAC[1][2][0][sPosition] = tLevel[sPosition];
+							}
+							else      //标识位不可用，将密文信息回退
+							{
+								SecretPosition--;
+							}
+						}
+					}
+					else
+					{
+						//将标识位置0并回退密文信息
+						int tLevel[16];
+						for (int i = 0; i < 16; i++)
+							tLevel[i] = img->cofAC[1][3][0][i];
+						int sPosition = GetLastNonZeroPosition(tLevel, 16);
+						if (sPosition != -1)	//说明该4x4块可用，则将标识位嵌入此块
+						{
+							if (tLevel[sPosition] % 2 == 1)
+							{
+								tLevel[sPosition] += 1;
+							}
+							else if (tLevel[sPosition] % 2 == -1)
+							{
+								tLevel[sPosition] -= 1;
+							}
+							//将修改后的level写回原数组中
+							img->cofAC[1][3][0][sPosition] = tLevel[sPosition];
+						}
+						else    //第4块不可用，则检测第3块
+						{
+							for (int i = 0; i < 16; i++)
+								tLevel[i] = img->cofAC[1][2][0][i];
+							sPosition = 0;
+							sPosition = GetLastNonZeroPosition(tLevel, 16);
+							if (sPosition != -1)		//说明第3块可用，将标识嵌入此块
+							{
+								if (tLevel[sPosition] % 2 == 1)
+								{
+									tLevel[sPosition] += 1;
+								}
+								else if (tLevel[sPosition] % 2 == -1)
+								{
+									tLevel[sPosition] -= 1;
+								}
+								//将修改后的level写回原数组中
+								img->cofAC[1][2][0][sPosition] = tLevel[sPosition];
+							}
+						}
 						SecretPosition--;
 					}
-
-
+						
 				}
 			}
 			

@@ -88,8 +88,9 @@ struct img_par    *img;         //!< image parameters
 
 int global_init_done = 0;
 
-char* SecretBinaryBitStream = NULL;
-int SecretPosition = 0;
+char* SecretBinaryBitStream;
+int SecretPosition;
+int SecretBitNum;
 
 /*!
  ***********************************************************************
@@ -99,7 +100,13 @@ int SecretPosition = 0;
  */
 int main(int argc, char **argv)
 {
-	Decode_EmbedCodeFlg = 0;
+
+	SecretBinaryBitStream = NULL;
+	SecretPosition = 0;
+	SecretBitNum = 10;
+	SecretBinaryBitStream = (char*)malloc(sizeof(char)*SecretBitNum);
+
+	Decode_EmbedCodeFlg = 1;
 	// allocate memory for the structures
 	SecretBinaryBitStream = malloc(sizeof(char) * 11);
 	if ((input = (struct inp_par *)calloc(1, sizeof(struct inp_par))) == NULL) no_mem_exit("main: input");
@@ -194,6 +201,7 @@ int main(int argc, char **argv)
 	scanf("%d", &a);
 
 	//while( !kbhit() ); 
+	free(SecretBinaryBitStream);
 	return 0;
 }
 

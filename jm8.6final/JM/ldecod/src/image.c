@@ -71,6 +71,7 @@ OldSliceParams old_slice;
 #ifdef MY_SECRET_DECODE
 extern char* SecretBinaryBitStream;
 extern int SecretPosition;
+extern int SecretBitNum;
 #endif
 
 //#undef MY_SECRET
@@ -1351,9 +1352,9 @@ void decode_one_slice(struct img_par *img, struct inp_par *inp)
 #ifdef MY_SECRET_DECODE
 		if (Decode_EmbedCodeFlg)
 		{
-			if (SecretPosition < 10)
+			if (SecretPosition < SecretBitNum)
 			{
-				int* tarray = &(img->cofAC[1][1][0]);
+				/*int* tarray = &(img->cofAC[1][1][0]);
 				int sPosition = GetLastNonZeroPosition(tarray, 16);
 				if (sPosition > -1)
 				{
@@ -1362,7 +1363,66 @@ void decode_one_slice(struct img_par *img, struct inp_par *inp)
 					else
 						SecretBinaryBitStream[SecretPosition] = '1';
 					SecretPosition++;
+				}*/
+				//使能开关
+				int EnableFlg = 0;
+
+				//首先检查标识位
+				int LTrNum = 1;
+				int LTcNum = 3;
+				MyIndexConvert(&LTrNum, &LTcNum, 0);
+				int* tarray = &(img->cofAC[LTrNum][LTcNum][0]);
+				int sPosition = GetLastNonZeroPosition(tarray, 16);
+				if (sPosition > -1)		//说明第4块标识位可用，则检测其中的标识
+				{
+					if (tarray[sPosition] % 2 != 0)
+						EnableFlg = 1;
 				}
+				else     //第4块标识位不可用，则检测第3块
+				{
+					LTrNum = 1;
+					LTcNum = 2;
+					MyIndexConvert(&LTrNum, &LTcNum, 0);
+					tarray = &(img->cofAC[LTrNum][LTcNum][0]);
+					sPosition = GetLastNonZeroPosition(tarray, 16);
+					if (sPosition > -1)		//第3块标识位可用
+					{
+						if (tarray[sPosition] % 2 != 0)
+							EnableFlg = 1;
+					}
+					else
+						EnableFlg = 0;
+				}
+
+				if (EnableFlg)
+				{
+					//开始检测第1个8x8块的能量
+					int BlockIndex_0 = 0;
+					int BlockIndex_1 = 0;
+					int BlockIndex_2 = 0;
+					int BlockIndex_3 = 0;
+					int subBlockIndex_0 = 0;
+					int subBlockIndex_1 = 1;
+					int subBlockIndex_2 = 2;
+					int subBlockIndex_3 = 3;
+					MyIndexConvert(&BlockIndex_0, &subBlockIndex_0, 0);
+					MyIndexConvert(&BlockIndex_1, &subBlockIndex_1, 1);
+					MyIndexConvert(&BlockIndex_2, &subBlockIndex_2, 2);
+					MyIndexConvert(&BlockIndex_3, &subBlockIndex_3, 3);
+					int LTEnergySum = 0;
+					int LDEnergySum = 0;
+					for (int i = 0; i < 16; i++)
+					{
+						LTEnergySum += abs(img->cofAC[BlockIndex_0][subBlockIndex_0][0][i]);
+						LTEnergySum += abs(img->cofAC[BlockIndex_3][subBlockIndex_3][0][i]);
+						LDEnergySum += abs(img->cofAC[BlockIndex_1][subBlockIndex_1][0][i]);
+						LDEnergySum += abs(img->cofAC[BlockIndex_2][subBlockIndex_2][0][i]);
+					}
+					char sCh = LTEnergySum > LDEnergySum ? '1' : '0';
+					*(SecretBinaryBitStream + SecretPosition) = sCh;
+					SecretPosition++;
+				}
+
 			}
 		}
 #endif

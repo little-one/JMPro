@@ -54,6 +54,11 @@ typedef unsigned int    u_int32;
   int Decode_EmbedCodeFlg;
 #endif
 
+#ifndef MY_GET_PSNR_DECODE
+#define MY_GET_PSNR_DECODE
+  int Decode_GetPsnrFlg;
+#endif
+
 pic_parameter_set_rbsp_t *active_pps;
 seq_parameter_set_rbsp_t *active_sps;
 

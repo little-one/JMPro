@@ -189,10 +189,17 @@ int main(int argc, char **argv)
 	stat->bit_ctr_parametersets += stat->bit_ctr_parametersets_n;
 	start_frame_no_in_this_IGOP = 0;
 
+
 	for (img->number = 0; img->number < input->no_frames; img->number++)
 	{
 		img->nal_reference_idc = 1;
 
+#ifdef MY_SECRET_ENCODE
+		if ((img->number + 1) % 3 == 0)
+			Encode_EmbedCodeFlg = 1;
+		else
+			Encode_EmbedCodeFlg = 0;
+#endif
 		//much of this can go in init_frame() or init_field()?
 		//poc for this frame or field
 		img->toppoc = (input->intra_period && input->idr_enable ? IMG_NUMBER % input->intra_period : IMG_NUMBER) * (2 * (input->successive_Bframe + 1));

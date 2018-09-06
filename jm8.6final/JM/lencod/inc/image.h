@@ -31,6 +31,14 @@
 
 #include "mbuffer.h"
 
+#ifndef DQ_BITS
+#define DQ_BITS         6
+#endif
+
+#ifndef DQ_ROUND
+#define DQ_ROUND        (1<<(DQ_BITS-1))
+#endif
+
 extern StorablePicture *enc_picture;
 extern StorablePicture *enc_frame_picture;
 extern StorablePicture *enc_top_picture;

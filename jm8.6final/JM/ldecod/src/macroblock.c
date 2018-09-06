@@ -500,6 +500,22 @@ void reset_coeffs()
 		for (j = 0; j < 6; j++)
 			img->nz_coeff[img->current_mb_nr][i][j] = 0;
 
+#ifdef MY_SECRET_DECODE
+	if (Decode_EmbedCodeFlg)
+	{
+		for (int tj = 0; tj < 6; tj++)
+		{
+			for (int ti = 0; ti < 4; ti++)
+			{
+				for (int tk = 0; tk < 16; tk++)
+				{
+					img->cofAC[tj][ti][0][tk] = 0;
+					img->cofAC[tj][ti][1][tk] = 0;
+				}
+			}
+		}
+	}
+#endif
 }
 
 void field_flag_inference()
@@ -2752,13 +2768,10 @@ void readCBPandCoeffsFromNAL(struct img_par *img, struct inp_par *inp)
 #ifdef MY_SECRET_DECODE
 							if (Decode_EmbedCodeFlg)
 							{
-								for (int tj = 0; tj < 4; tj++)
+								for (int ti = 0; ti < 16; ti++)
 								{
-									for (int ti = 0; ti < 16; ti++)
-									{
-										img->cofAC[j][i][0][ti] = 0;
-										img->cofAC[j][i][1][ti] = 0;
-									}
+									img->cofAC[j][i][0][ti] = 0;
+									img->cofAC[j][i][1][ti] = 0;
 								}
 							}
 #endif
@@ -3201,7 +3214,6 @@ int decode_one_macroblock(struct img_par *img, struct inp_par *inp)
 		co_located_ref_id = Co_located->ref_pic_id;
 		max_y_cr = dec_picture->size_y_cr - 1;
 	}
-
 
 
 	if (!img->MbaffFrameFlag)

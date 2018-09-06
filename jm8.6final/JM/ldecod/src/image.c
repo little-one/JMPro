@@ -51,7 +51,7 @@
 #include "loopfilter.h"
 
 #include "vlc.h"
-
+#include <stdio.h>
 #include "erc_api.h"
 extern objectBuffer_t *erc_object_list;
 extern ercVariables_t *erc_errorVar;
@@ -143,6 +143,12 @@ int decode_one_frame(struct img_par *img, struct inp_par *inp, struct snr_par *s
 	{
 		current_header = read_new_slice();
 
+#ifdef MY_SECRET_DECODE
+		if ((img->number + 1) % 3 == 0)
+			Decode_EmbedCodeFlg = 1;
+		else
+			Decode_EmbedCodeFlg = 0;
+#endif
 		if (current_header == EOS)
 		{
 			exit_picture();
@@ -1348,7 +1354,6 @@ void decode_one_slice(struct img_par *img, struct inp_par *inp)
 		start_macroblock(img, inp, img->current_mb_nr);
 		// Get the syntax elements from the NAL
 		read_flag = read_one_macroblock(img, inp);
-
 #ifdef MY_SECRET_DECODE
 		if (Decode_EmbedCodeFlg)
 		{
@@ -1358,15 +1363,15 @@ void decode_one_slice(struct img_par *img, struct inp_par *inp)
 				int sPosition = GetLastNonZeroPosition(tarray, 16);
 				if (sPosition > -1)
 				{
-					if (tarray[sPosition] % 2 == 0)
-						SecretBinaryBitStream[SecretPosition] = '0';
-					else
-						SecretBinaryBitStream[SecretPosition] = '1';
-					SecretPosition++;
+				if (tarray[sPosition] % 2 == 0)
+				SecretBinaryBitStream[SecretPosition] = '0';
+				else
+				SecretBinaryBitStream[SecretPosition] = '1';
+				SecretPosition++;
 				}*/
 				//使能开关
 				int EnableFlg = 0;
-
+				int b4x4num = 0;
 				//首先检查标识位
 				int LTrNum = 1;
 				int LTcNum = 3;
@@ -1376,7 +1381,10 @@ void decode_one_slice(struct img_par *img, struct inp_par *inp)
 				if (sPosition > -1)		//说明第4块标识位可用，则检测其中的标识
 				{
 					if (tarray[sPosition] % 2 != 0)
+					{
 						EnableFlg = 1;
+						b4x4num = 4;
+					}
 				}
 				else     //第4块标识位不可用，则检测第3块
 				{
@@ -1388,7 +1396,10 @@ void decode_one_slice(struct img_par *img, struct inp_par *inp)
 					if (sPosition > -1)		//第3块标识位可用
 					{
 						if (tarray[sPosition] % 2 != 0)
+						{
 							EnableFlg = 1;
+							b4x4num = 3;
+						}
 					}
 					else
 						EnableFlg = 0;
@@ -1421,6 +1432,7 @@ void decode_one_slice(struct img_par *img, struct inp_par *inp)
 					char sCh = LTEnergySum > LDEnergySum ? '1' : '0';
 					*(SecretBinaryBitStream + SecretPosition) = sCh;
 					SecretPosition++;
+					printf("在第%d帧的第%d个宏块中提取第%d位,密文标识位在第%d个4x4块中\n", img->number, img->current_mb_nr, SecretPosition, b4x4num);
 				}
 
 			}
@@ -1439,6 +1451,57 @@ void decode_one_slice(struct img_par *img, struct inp_par *inp)
 
 		end_of_slice = exit_macroblock(img, inp, (!img->MbaffFrameFlag || img->current_mb_nr % 2));
 	}
+
+#ifdef MY_GET_PSNR_DECODE
+	Decode_GetPsnrFlg = 0;
+	if (Decode_GetPsnrFlg)
+	{
+		char DirY[15] = "D:\\decY00.txt";
+		char DirU[15] = "D:\\decU00.txt";
+		char DirV[15] = "D:\\decV00.txt";
+		if (img->number < 10)
+		{
+			DirY[8] = '0' + img->number;
+			DirU[8] = '0' + img->number;
+			DirV[8] = '0' + img->number;
+		}
+		else
+		{
+			DirY[7] = '1';
+			DirU[7] = '1';
+			DirV[7] = '1';
+		}
+		char zero = 0;
+		FILE* op3, *op1, *op2;
+		fopen_s(&op3, DirY, "w");
+		fflush(op3);
+		for (int i = 0; i < img->height; i++)
+		{
+			for (int j = 0; j < img->width; j++)
+			{
+				//printf("%d ", (int)dec_picture->imgY[i][j]);
+				fprintf_s(op3, "%d ", (int)dec_picture->imgY[i][j] - zero);
+			}
+			fprintf_s(op3, "\r\n");
+		}
+		fopen_s(&op1, DirU, "w");
+		fopen_s(&op2, DirV, "w");
+		for (int i = 0; i < img->height_cr; i++)
+		{
+			for (int j = 0; j < img->width_cr; j++)
+			{
+				fprintf_s(op1, "%d ", (int)dec_picture->imgUV[0][i][j] - zero);
+				fprintf_s(op2, "%d ", (int)dec_picture->imgUV[1][i][j] - zero);
+			}
+			fprintf_s(op1, "\r\n");
+			fprintf_s(op2, "\r\n");
+		}
+
+		fclose(op3);
+		fclose(op1);
+		fclose(op2);
+	}
+#endif
 
 	exit_slice();
 	//reset_ec_flags();

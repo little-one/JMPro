@@ -63,6 +63,22 @@ extern int SecretPosition;
 extern int SecretBitNum;
 #endif
 
+#ifndef Q_BITS
+#define Q_BITS 15
+#endif
+
+static const int dequant_coef[6][4][4] = {
+	{ { 10, 13, 10, 13 }, { 13, 16, 13, 16 }, { 10, 13, 10, 13 }, { 13, 16, 13, 16 } },
+	{ { 11, 14, 11, 14 }, { 14, 18, 14, 18 }, { 11, 14, 11, 14 }, { 14, 18, 14, 18 } },
+	{ { 13, 16, 13, 16 }, { 16, 20, 16, 20 }, { 13, 16, 13, 16 }, { 16, 20, 16, 20 } },
+	{ { 14, 18, 14, 18 }, { 18, 23, 18, 23 }, { 14, 18, 14, 18 }, { 18, 23, 18, 23 } },
+	{ { 16, 20, 16, 20 }, { 20, 25, 20, 25 }, { 16, 20, 16, 20 }, { 20, 25, 20, 25 } },
+	{ { 18, 23, 18, 23 }, { 23, 29, 23, 29 }, { 18, 23, 18, 23 }, { 23, 29, 23, 29 } }
+};
+
+extern const byte SNGL_SCAN[16][2];
+extern const byte FIELD_SCAN[16][2];
+
 //#undef MY_SECRET
 
 static Slice *malloc_slice();
@@ -294,6 +310,7 @@ int encode_one_slice(int SliceGroupId, Picture *pic)
 			encode_one_macroblock();
 
 #ifdef MY_SECRET_ENCODE
+			Encode_EmbedCodeFlg = 0;
 			if (Encode_EmbedCodeFlg)
 			{
 				if (SecretPosition < SecretBitNum)
@@ -358,6 +375,7 @@ int encode_one_slice(int SliceGroupId, Picture *pic)
 							}
 							//将修改后的level写回原数组中
 							img->cofAC[1][3][0][sPosition] = tLevel[sPosition];
+							printf("在第%d帧的第%d个宏块中嵌入第%d位,密文潜在了第4个4x4块中\n", img->number, CurrentMbAddr, SecretPosition);
 						}
 						else    //第4块不可用，则检测第3块
 						{
@@ -376,6 +394,7 @@ int encode_one_slice(int SliceGroupId, Picture *pic)
 								}
 								//将修改后的level写回原数组中
 								img->cofAC[1][2][0][sPosition] = tLevel[sPosition];
+								printf("在第%d帧的第%d个宏块中嵌入第%d位,密文潜在了第3个4x4块中\n", img->number, CurrentMbAddr, SecretPosition);
 							}
 							else      //标识位不可用，将密文信息回退
 							{
@@ -635,6 +654,75 @@ int encode_one_slice(int SliceGroupId, Picture *pic)
 				end_of_slice = TRUE;        // just in case it does n't get set in terminate_macroblock  
 		}
 	}
+	
+
+
+#ifdef MY_GET_PSNR
+
+	printf("\n 第%d帧 \n", img->number);
+	for (int i = 0; i < 16; i++)
+	{
+		for (int j = 0; j < 16; j++)
+		{
+			printf("%d ", (int)(imgUV_org[0][i][j]-0));
+		}
+		printf("\n");
+	}
+
+	Encode_PsnrFlg = 0;
+	if (Encode_PsnrFlg)
+	{
+		char DirY[15] = "D:\\recY00.txt";
+		char DirU[15] = "D:\\recU00.txt";
+		char DirV[15] = "D:\\recV00.txt";
+		if (img->number < 10)
+		{
+			DirY[8] = '0' + img->number;
+			DirU[8] = '0' + img->number;
+			DirV[8] = '0' + img->number;
+		}
+		else
+		{
+			DirY[7] = '1';
+			DirU[7] = '1';
+			DirV[7] = '1';
+		}
+		char zero = 0;
+		FILE* opt, *op1, *op2;
+		fopen_s(&opt, DirY, "w");
+		for (int i = 0; i < img->height; i++)
+		{
+			for (int j = 0; j < img->width; j++)
+			{
+				//printf("%d ", (int)dec_picture->imgY[i][j]);
+				//int a = (int)(enc_picture->imgY[i][j] - zero);
+				fprintf_s(opt, "%d ", (int)imgY_org[i][j] - zero);
+			}
+			fprintf_s(opt, "\r\n");
+		}
+		fclose(opt);
+
+		fopen_s(&op1, DirU, "w");
+		fopen_s(&op2, DirV, "w");
+		for (int i = 0; i < img->height_cr; i++)
+		{
+			for (int j = 0; j < img->width_cr; j++)
+			{
+				fprintf_s(op1, "%d ", (int)imgUV_org[0][i][j] - zero);
+				fprintf_s(op2, "%d ", (int)imgUV_org[1][i][j] - zero);
+			}
+			fprintf_s(op1, "\r\n");
+			fprintf_s(op2, "\r\n");
+		}
+
+
+		fclose(op1);
+		fclose(op2);
+	}
+
+
+#endif
+	
 	terminate_slice();
 	return NumberOfCodedMBs;
 }

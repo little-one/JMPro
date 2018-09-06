@@ -1064,7 +1064,8 @@ int dct_luma(int block_x, int block_y, int *coeff_cost, int old_intra_mode)
  ************************************************************************
  */
 int dct_chroma(int uv, int cr_cbp)
-{//uv 只能取0或1 
+{
+	//uv 只能取0或1 
 	int i, j, i1, j2, ilev, n2, n1, j1, mb_y, coeff_ctr, qp_const, level, scan_pos, run;
 	int m1[BLOCK_SIZE], m5[BLOCK_SIZE], m6[BLOCK_SIZE];
 	int coeff_cost;

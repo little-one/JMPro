@@ -66,6 +66,7 @@ typedef struct storable_picture //chj 用于保存图像处理的结果
   int         MbaffFrameFlag;
   
   byte **     imgY;          //!< Y picture component	
+  byte **     imgY_MY_PSNR;
   //用于保存重构图像的像素值Y分量，输出到重构yuv文件
   byte *      imgY_11;       //!< Y picture component with padded borders带边界填补的重构图像
   byte *      imgY_11_w;     //!< Y picture component with padded borders for weighted prediction

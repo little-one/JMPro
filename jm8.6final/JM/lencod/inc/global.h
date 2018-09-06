@@ -68,6 +68,11 @@ typedef long long int64;
 int Encode_EmbedCodeFlg;
 #endif
 
+#ifndef MY_GET_PSNR
+#define MY_GET_PSNR
+int Encode_PsnrFlg;
+//void My_Itrans(ImageParameters *img, int ioff, int joff, int i0, int j0);
+#endif
 
 /***********************************************************************
  * T y p e    d e f i n i t i o n s    f o r    T M L

@@ -4,7 +4,7 @@
  Sequence                     : foreman_qcif.yuv
  No.of coded pictures         :   10
  Freq. for encoded bitstream  :   30
- Bitrate(kb/s)                : 336.34
+ Bitrate(kb/s)                : 336.94
  Hadamard transform           : Used
  Image format                 : 176x144
  Error robustness             : Off
@@ -46,9 +46,9 @@
  Motion Info          |        ./.     |     884.89     |       0.00     |
  CBP Y/C              |    1454.00     |     177.00     |       0.00     |
  Coeffs. Y            |   79494.00     |    1067.89     |       0.00     |
- Coeffs. C            |    7099.00     |      38.44     |       0.00     |
+ Coeffs. C            |    7297.00     |      38.44     |       0.00     |
  Delta quant          |     396.00     |      22.67     |       0.00     |
  Stuffing Bits        |       0.00     |       0.00     |       0.00     |
  ---------------------|----------------|----------------|----------------|
- average bits/frame   |   89059.00     |    2491.11     |       0.00     |
+ average bits/frame   |   89257.00     |    2491.11     |       0.00     |
  ---------------------|----------------|----------------|----------------|

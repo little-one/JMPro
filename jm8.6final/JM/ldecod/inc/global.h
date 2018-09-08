@@ -51,6 +51,7 @@ typedef unsigned int    u_int32;
 #endif
 #ifndef MY_SECRET_DECODE
 #define MY_SECRET_DECODE
+  int Decode_PrioritySwitch;
   int Decode_EmbedCodeFlg;
 #endif
 

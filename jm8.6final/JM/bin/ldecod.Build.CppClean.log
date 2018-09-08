@@ -1,7 +1,5 @@
-d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\ldecod\debug\ldecod.bsc
 d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\ldecod\debug\vc120.pdb
 d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\bin\annexb.sbr
-d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\bin\biaridecod.sbr
 d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\bin\block.sbr
 d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\bin\cabac.sbr
 d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\bin\context_ini.sbr
@@ -61,6 +59,8 @@ d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\ldecod\debug\nalucommon.obj
 d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\ldecod\debug\nalu.obj
 d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\ldecod\debug\nal.obj
 d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\bin\ldecod.ilk
+d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\bin\ldecod.exe
+d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\ldecod\debug\ldecod.pdb
 d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\bin\lencod.ilk
 d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\bin\biariencode.sbr
 d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\bin\configfile.sbr

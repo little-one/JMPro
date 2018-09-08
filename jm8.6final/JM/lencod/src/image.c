@@ -512,11 +512,59 @@ int encode_one_frame()
 	  */
 
 	find_snr();
+
 #ifdef MY_GET_PSNR
-	//限制作用于避免变量冲突
+	if (Encode_PsnrFlg)
 	{
-		
+		char DirY[15] = "D:\\recY00.txt";
+		char DirU[15] = "D:\\recU00.txt";
+		char DirV[15] = "D:\\recV00.txt";
+		if (img->number < 10)
+		{
+			DirY[8] = '0' + img->number;
+			DirU[8] = '0' + img->number;
+			DirV[8] = '0' + img->number;
+		}
+		else
+		{
+			DirY[7] = '1';
+			DirU[7] = '1';
+			DirV[7] = '1';
+		}
+		char zero = 0;
+		FILE* opt, *op1, *op2;
+		fopen_s(&opt, DirY, "w");
+		for (int i = 0; i < img->height; i++)
+		{
+			for (int j = 0; j < img->width; j++)
+			{
+				//printf("%d ", (int)dec_picture->imgY[i][j]);
+				//int a = (int)(enc_picture->imgY[i][j] - zero);
+				fprintf_s(opt, "%d ", (int)imgY_org[i][j] - zero);
+			}
+			fprintf_s(opt, "\r\n");
+		}
+		fclose(opt);
+
+		fopen_s(&op1, DirU, "w");
+		fopen_s(&op2, DirV, "w");
+		for (int i = 0; i < img->height_cr; i++)
+		{
+			for (int j = 0; j < img->width_cr; j++)
+			{
+				fprintf_s(op1, "%d ", (int)imgUV_org[0][i][j] - zero);
+				fprintf_s(op2, "%d ", (int)imgUV_org[1][i][j] - zero);
+			}
+			fprintf_s(op1, "\r\n");
+			fprintf_s(op2, "\r\n");
+		}
+
+
+		fclose(op1);
+		fclose(op2);
 	}
+
+
 #endif
 
 
@@ -1491,6 +1539,7 @@ static void find_snr()
 	if (diff_v == 0)
 		diff_v = 1;
 #endif
+
 
 	//  Collecting SNR statistics
 	if (diff_y != 0)

@@ -103,12 +103,13 @@ int main(int argc, char **argv)
 
 	SecretBinaryBitStream = NULL;
 	SecretPosition = 0;
-	SecretBitNum = 10;
+	SecretBitNum = 80;
 	SecretBinaryBitStream = (char*)malloc(sizeof(char)*SecretBitNum);
 
-	Decode_EmbedCodeFlg = 1;
+	Decode_PrioritySwitch = 1;
+	Decode_GetPsnrFlg = 0;
 	// allocate memory for the structures
-	SecretBinaryBitStream = malloc(sizeof(char) * 11);
+	//SecretBinaryBitStream = malloc(sizeof(char) * SecretBitNum);
 	if ((input = (struct inp_par *)calloc(1, sizeof(struct inp_par))) == NULL) no_mem_exit("main: input");
 	if ((snr = (struct snr_par *)calloc(1, sizeof(struct snr_par))) == NULL) no_mem_exit("main: snr");
 	if ((img = (struct img_par *)calloc(1, sizeof(struct img_par))) == NULL) no_mem_exit("main: img");
@@ -163,7 +164,81 @@ int main(int argc, char **argv)
 	tot_time = 0;
 	while (decode_one_frame(img, input, snr) != EOS)
 		;
+	
 
+#ifdef MY_GET_PSNR_DECODE
+	if (Decode_GetPsnrFlg)
+	{
+		char DirY[15] = "D:\\decY00.txt";
+		char DirU[15] = "D:\\decU00.txt";
+		char DirV[15] = "D:\\decV00.txt";
+
+		for (int frameno = 0; frameno < input->dpb_size; frameno++)
+		{
+			DirY[7] = '0';
+			DirY[8] = '0';
+			DirU[7] = '0';
+			DirU[8] = '0';
+			DirV[7] = '0';
+			DirV[8] = '0';
+
+			//printf("µÚ%dÖ¡-------------------\n", frameno);
+			//for (int i = 0; i < 16; i++)
+			//{
+			//	for (int j = 0; j < 16; j++)
+			//	{
+			//		printf("%d ", (int)(dpb.fs[frameno]->frame->imgUV[0][i][j] - 0));
+			//	}
+			//	printf("\n");
+			//}
+
+
+			if (frameno < 10)
+			{
+				DirY[8] = '0' + frameno;
+				DirU[8] = '0' + frameno;
+				DirV[8] = '0' + frameno;
+			}
+			else
+			{
+				DirY[7] = '1';
+				DirU[7] = '1';
+				DirV[7] = '1';
+			}
+			char zero = 0;
+			FILE* op3, *op1, *op2;
+			fopen_s(&op3, DirY, "w");
+			fflush(op3);
+			//diff_u += img->quad[abs(imgUV_ref[0][j][i] - p->imgUV[0][j][i])];
+			for (int i = 0; i < img->height; i++)
+			{
+				for (int j = 0; j < img->width; j++)
+				{
+					//printf("%d ", (int)dec_picture->imgY[i][j]);
+					//fprintf_s(op3, "%d ", (int)imgY_ref[i][j] - zero);
+					fprintf_s(op3, "%d ", (int)dpb.fs[frameno]->frame->imgY[i][j] - zero);
+				}
+				fprintf_s(op3, "\r\n");
+			}
+			fopen_s(&op1, DirU, "w");
+			fopen_s(&op2, DirV, "w");
+			for (int i = 0; i < img->height_cr; i++)
+			{
+				for (int j = 0; j < img->width_cr; j++)
+				{
+					fprintf_s(op1, "%d ", (int)(dpb.fs[frameno]->frame->imgUV[0][i][j] - zero));
+					fprintf_s(op2, "%d ", (int)dpb.fs[frameno]->frame->imgUV[1][i][j] - zero);
+				}
+				fprintf_s(op1, "\r\n");
+				fprintf_s(op2, "\r\n");
+			}
+
+			fclose(op3);
+			fclose(op1);
+			fclose(op2);
+		}
+	}
+#endif
 	report(input, img, snr);
 	free_slice(input, img);
 	FmoFinit();

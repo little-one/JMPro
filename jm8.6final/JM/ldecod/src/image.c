@@ -72,8 +72,14 @@ OldSliceParams old_slice;
 extern char* SecretBinaryBitStream;
 extern int SecretPosition;
 extern int SecretBitNum;
+static const int SearchOrderForMark[8][2] = {
+	{ 5, 3 }, { 5, 1 }, { 5, 2 }, { 5, 0 }, { 4, 3 }, { 4, 1 }, { 4, 2 }, { 4, 0 }
+};
 #endif
 
+#ifndef OUTPUT_EXTRACT_POSITION
+#define OUTPUT_EXTRACT_POSITION
+#endif
 //#undef MY_SECRET
 
 void MbAffPostProc()
@@ -144,8 +150,13 @@ int decode_one_frame(struct img_par *img, struct inp_par *inp, struct snr_par *s
 		current_header = read_new_slice();
 
 #ifdef MY_SECRET_DECODE
-		if ((img->number + 1) % 3 == 0)
-			Decode_EmbedCodeFlg = 1;
+		if (Decode_PrioritySwitch)
+		{
+			if ((img->number) % 3 == 0)
+				Decode_EmbedCodeFlg = 1;
+			else
+				Decode_EmbedCodeFlg = 0;
+		}
 		else
 			Decode_EmbedCodeFlg = 0;
 #endif
@@ -1355,6 +1366,19 @@ void decode_one_slice(struct img_par *img, struct inp_par *inp)
 		// Get the syntax elements from the NAL
 		read_flag = read_one_macroblock(img, inp);
 #ifdef MY_SECRET_DECODE
+		for (int i = 0; i < 6; i++)
+		{
+			for (int j = 0; j < 4; j++)
+			{
+				if (img->nz_coeff[img->current_mb_nr][j][i] == 0)
+				{
+					for (int tk = 0; tk < 16; tk++)
+					{
+						img->cofAC[i][j][0][tk] = 0;
+					}
+				}
+			}
+		}
 		if (Decode_EmbedCodeFlg)
 		{
 			if (SecretPosition < SecretBitNum)
@@ -1373,66 +1397,125 @@ void decode_one_slice(struct img_par *img, struct inp_par *inp)
 				int EnableFlg = 0;
 				int b4x4num = 0;
 				//首先检查标识位
-				int LTrNum = 1;
-				int LTcNum = 3;
-				MyIndexConvert(&LTrNum, &LTcNum, 0);
-				int* tarray = &(img->cofAC[LTrNum][LTcNum][0]);
-				int sPosition = GetLastNonZeroPosition(tarray, 16);
-				if (sPosition > -1)		//说明第4块标识位可用，则检测其中的标识
+
+				int RowNum, ColNum;
+				int sPosition;
+				int(*tLevel)[16] = NULL;
+
+				for (int MarkPosition = 0; MarkPosition < 8; MarkPosition++)
 				{
-					if (tarray[sPosition] % 2 != 0)
+					RowNum = SearchOrderForMark[MarkPosition][0];
+					ColNum = SearchOrderForMark[MarkPosition][1];
+
+					tLevel = img->cofAC[RowNum][ColNum][0];
+
+					sPosition = -1;
+					for (int j = 0; j < 16; j++)
+					{
+						//int letmelooklook = *(*tLevel + sPosition + 1);
+						if (*(*tLevel + sPosition + 1) != 0)
+						{
+							sPosition++;
+						}
+						else
+							break;
+					}
+					if (sPosition == -1)
+					{
+						continue;
+					}
+					else
 					{
 						EnableFlg = 1;
-						b4x4num = 4;
+						break;
 					}
 				}
-				else     //第4块标识位不可用，则检测第3块
+				if (EnableFlg)
 				{
-					LTrNum = 1;
-					LTcNum = 2;
-					MyIndexConvert(&LTrNum, &LTcNum, 0);
-					tarray = &(img->cofAC[LTrNum][LTcNum][0]);
-					sPosition = GetLastNonZeroPosition(tarray, 16);
-					if (sPosition > -1)		//第3块标识位可用
-					{
-						if (tarray[sPosition] % 2 != 0)
-						{
-							EnableFlg = 1;
-							b4x4num = 3;
-						}
-					}
+					///int letmelooklook = *(*())
+					if (*(*tLevel + sPosition) % 2 != 0)
+						EnableFlg = 1;
 					else
 						EnableFlg = 0;
 				}
+				//int* tarray = &(img->cofAC[LTrNum][LTcNum][0]);
+				//int sPosition = GetLastNonZeroPosition(tarray, 16);
+				//if (sPosition > -1)		//说明第4块标识位可用，则检测其中的标识
+				//{
+				//	if (tarray[sPosition] % 2 != 0)
+				//	{
+				//		EnableFlg = 1;
+				//		b4x4num = 4;
+				//	}
+				//}
+				//else     //第4块标识位不可用，则检测第3块
+				//{
+				//	LTrNum = 1;
+				//	LTcNum = 2;
+				//	MyIndexConvert(&LTrNum, &LTcNum, 0);
+				//	tarray = &(img->cofAC[LTrNum][LTcNum][0]);
+				//	sPosition = GetLastNonZeroPosition(tarray, 16);
+				//	if (sPosition > -1)		//第3块标识位可用
+				//	{
+				//		if (tarray[sPosition] % 2 != 0)
+				//		{
+				//			EnableFlg = 1;
+				//			b4x4num = 3;
+				//		}
+				//	}
+				//	else
+				//		EnableFlg = 0;
+				//}
 
 				if (EnableFlg)
 				{
 					//开始检测第1个8x8块的能量
-					int BlockIndex_0 = 0;
-					int BlockIndex_1 = 0;
-					int BlockIndex_2 = 0;
-					int BlockIndex_3 = 0;
-					int subBlockIndex_0 = 0;
-					int subBlockIndex_1 = 1;
-					int subBlockIndex_2 = 2;
-					int subBlockIndex_3 = 3;
-					MyIndexConvert(&BlockIndex_0, &subBlockIndex_0, 0);
-					MyIndexConvert(&BlockIndex_1, &subBlockIndex_1, 1);
-					MyIndexConvert(&BlockIndex_2, &subBlockIndex_2, 2);
-					MyIndexConvert(&BlockIndex_3, &subBlockIndex_3, 3);
-					int LTEnergySum = 0;
+					int BlockIndex1_0 = 1;
+					int BlockIndex1_1 = 1;
+					int BlockIndex1_2 = 1;
+					int BlockIndex1_3 = 1;
+					int subBlockIndex1_0 = 0;
+					int subBlockIndex1_1 = 1;
+					int subBlockIndex1_2 = 2;
+					int subBlockIndex1_3 = 3;
+					MyIndexConvert(&BlockIndex1_0, &subBlockIndex1_0, 0);
+					MyIndexConvert(&BlockIndex1_1, &subBlockIndex1_1, 1);
+					MyIndexConvert(&BlockIndex1_2, &subBlockIndex1_2, 2);
+					MyIndexConvert(&BlockIndex1_3, &subBlockIndex1_3, 3);
+
+					int BlockIndex2_0 = 2;
+					int BlockIndex2_1 = 2;
+					int BlockIndex2_2 = 2;
+					int BlockIndex2_3 = 2;
+					int subBlockIndex2_0 = 0;
+					int subBlockIndex2_1 = 1;
+					int subBlockIndex2_2 = 2;
+					int subBlockIndex2_3 = 3;
+					MyIndexConvert(&BlockIndex2_0, &subBlockIndex2_0, 0);
+					MyIndexConvert(&BlockIndex2_1, &subBlockIndex2_1, 1);
+					MyIndexConvert(&BlockIndex2_2, &subBlockIndex2_2, 2);
+					MyIndexConvert(&BlockIndex2_3, &subBlockIndex2_3, 3);
+
+					int RTEnergySum = 0;
 					int LDEnergySum = 0;
 					for (int i = 0; i < 16; i++)
 					{
-						LTEnergySum += abs(img->cofAC[BlockIndex_0][subBlockIndex_0][0][i]);
-						LTEnergySum += abs(img->cofAC[BlockIndex_3][subBlockIndex_3][0][i]);
-						LDEnergySum += abs(img->cofAC[BlockIndex_1][subBlockIndex_1][0][i]);
-						LDEnergySum += abs(img->cofAC[BlockIndex_2][subBlockIndex_2][0][i]);
+						RTEnergySum += abs(img->cofAC[BlockIndex1_0][subBlockIndex1_0][0][i]);
+						RTEnergySum += abs(img->cofAC[BlockIndex1_3][subBlockIndex1_3][0][i]);
+						RTEnergySum += abs(img->cofAC[BlockIndex1_1][subBlockIndex1_1][0][i]);
+						RTEnergySum += abs(img->cofAC[BlockIndex1_2][subBlockIndex1_2][0][i]);
+
+						LDEnergySum += abs(img->cofAC[BlockIndex2_0][subBlockIndex2_0][0][i]);
+						LDEnergySum += abs(img->cofAC[BlockIndex2_1][subBlockIndex2_1][0][i]);
+						LDEnergySum += abs(img->cofAC[BlockIndex2_2][subBlockIndex2_2][0][i]);
+						LDEnergySum += abs(img->cofAC[BlockIndex2_3][subBlockIndex2_3][0][i]);
 					}
-					char sCh = LTEnergySum > LDEnergySum ? '1' : '0';
+					char sCh = RTEnergySum > LDEnergySum ? '1' : '0';
 					*(SecretBinaryBitStream + SecretPosition) = sCh;
 					SecretPosition++;
-					printf("在第%d帧的第%d个宏块中提取第%d位,密文标识位在第%d个4x4块中\n", img->number, img->current_mb_nr, SecretPosition, b4x4num);
+#ifdef OUTPUT_EXTRACT_POSITION
+					printf("在第%d帧的第%d个宏块中提取出密文的第%d位, 标识位坐标: %d, %d \n:", img->number, img->current_mb_nr, SecretPosition, RowNum, ColNum);
+#endif
 				}
 
 			}
@@ -1452,57 +1535,15 @@ void decode_one_slice(struct img_par *img, struct inp_par *inp)
 		end_of_slice = exit_macroblock(img, inp, (!img->MbaffFrameFlag || img->current_mb_nr % 2));
 	}
 
-#ifdef MY_GET_PSNR_DECODE
-	Decode_GetPsnrFlg = 0;
-	if (Decode_GetPsnrFlg)
-	{
-		char DirY[15] = "D:\\decY00.txt";
-		char DirU[15] = "D:\\decU00.txt";
-		char DirV[15] = "D:\\decV00.txt";
-		if (img->number < 10)
-		{
-			DirY[8] = '0' + img->number;
-			DirU[8] = '0' + img->number;
-			DirV[8] = '0' + img->number;
-		}
-		else
-		{
-			DirY[7] = '1';
-			DirU[7] = '1';
-			DirV[7] = '1';
-		}
-		char zero = 0;
-		FILE* op3, *op1, *op2;
-		fopen_s(&op3, DirY, "w");
-		fflush(op3);
-		for (int i = 0; i < img->height; i++)
-		{
-			for (int j = 0; j < img->width; j++)
-			{
-				//printf("%d ", (int)dec_picture->imgY[i][j]);
-				fprintf_s(op3, "%d ", (int)dec_picture->imgY[i][j] - zero);
-			}
-			fprintf_s(op3, "\r\n");
-		}
-		fopen_s(&op1, DirU, "w");
-		fopen_s(&op2, DirV, "w");
-		for (int i = 0; i < img->height_cr; i++)
-		{
-			for (int j = 0; j < img->width_cr; j++)
-			{
-				fprintf_s(op1, "%d ", (int)dec_picture->imgUV[0][i][j] - zero);
-				fprintf_s(op2, "%d ", (int)dec_picture->imgUV[1][i][j] - zero);
-			}
-			fprintf_s(op1, "\r\n");
-			fprintf_s(op2, "\r\n");
-		}
-
-		fclose(op3);
-		fclose(op1);
-		fclose(op2);
-	}
-#endif
-
+	//printf("\n 第%d帧 \n", img->number);
+	//for (int i = 0; i < 16; i++)
+	//{
+	//	for (int j = 0; j < 16; j++)
+	//	{
+	//		printf("%d ", (int)dec_picture->imgUV[0][i][j] - 0);
+	//	}
+	//	printf("\n");
+	//}
 	exit_slice();
 	//reset_ec_flags();
 
@@ -1524,6 +1565,8 @@ void decode_slice(struct img_par *img, struct inp_par *inp, int current_header)
 
 	//printf("frame picture %d %d %d\n",img->structure,img->ThisPOC,img->direct_type);
 
+
+	
 
 	// decode main slice information
 	if ((current_header == SOP || current_header == SOS) && currSlice->ei_flag == 0)

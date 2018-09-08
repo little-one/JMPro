@@ -120,11 +120,12 @@ void Clear_Motion_Search_Module();
  */
 int main(int argc, char **argv)
 {
+	Encode_PsnrFlg = 0;
 	SecretPosition = 0;
-	SecretBitNum = 10;
+	SecretBitNum = 80;
 	SecretBinaryBitStream = (char*)malloc(sizeof(char)*SecretBitNum);
 	//#undef MY_SECRET_ENCODE
-	Encode_EmbedCodeFlg = 1;
+	Encode_PrioritySwitch = 1;
 	for (int i = 0; i < SecretBitNum; i++)
 	{
 		*(SecretBinaryBitStream + i) = '0' + rand(i) % 2;
@@ -195,8 +196,13 @@ int main(int argc, char **argv)
 		img->nal_reference_idc = 1;
 
 #ifdef MY_SECRET_ENCODE
-		if ((img->number + 1) % 3 == 0)
-			Encode_EmbedCodeFlg = 1;
+		if (Encode_PrioritySwitch)
+		{
+			if ((img->number) % 3 == 0)
+				Encode_EmbedCodeFlg = 1;
+			else
+				Encode_EmbedCodeFlg = 0;
+		}
 		else
 			Encode_EmbedCodeFlg = 0;
 #endif

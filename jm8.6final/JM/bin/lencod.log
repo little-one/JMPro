@@ -1,15 +1,346 @@
-﻿生成启动时间为 2018/9/8 19:01:50。
+﻿生成启动时间为 2018/9/20 9:48:32。
      1>项目“D:\files\JM_Code_8.6\JmPro\JMPro\jm8.6final\JM\lencod.vcxproj”在节点 2 上(Build 个目标)。
      1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(363,5): warning MSB8004: Intermediate Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Intermediate Directory.
      1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(364,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
      1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(388,5): warning MSB8028: The intermediate directory (.\bin\) contains files shared from another project (ldecod.vcxproj).  This can lead to incorrect clean and rebuild behavior.
      1>ClCompile:
-         D:\software\Visual2013\VC\bin\CL.exe /c /Ilencod/inc /Ilcommon/inc /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _VC80_UPGRADE=0x0600 /D _MBCS /Gm- /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo".\lencod/Debug/" /Fd".\lencod/Debug/vc120.pdb" /FR".\bin\\" /Gd /TC /analyze- /errorReport:prompt lencod\src\slice.c
-         slice.c
-     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\slice.c(440): warning C4047: “=”:“int (*)[16]”与“int *”的间接级别不同
-     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\slice.c(617): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+         D:\software\Visual2013\VC\bin\CL.exe /c /Ilencod/inc /Ilcommon/inc /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _VC80_UPGRADE=0x0600 /D _MBCS /Gm- /EHsc /RTC1 /MTd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo".\lencod/Debug/" /Fd".\lencod/Debug/vc120.pdb" /FR".\bin\\" /Gd /TC /analyze- /errorReport:prompt lencod\src\annexb.c lencod\src\biariencode.c lencod\src\block.c lencod\src\cabac.c lencod\src\configfile.c lencod\src\context_ini.c lencod\src\decoder.c lencod\src\fast_me.c lencod\src\filehandle.c lencod\src\fmo.c lencod\src\header.c lencod\src\image.c lencod\src\intrarefresh.c lencod\src\leaky_bucket.c lencod\src\lencod.c lencod\src\loopFilter.c lencod\src\macroblock.c lencod\src\mb_access.c lencod\src\mbuffer.c lencod\src\memalloc.c "lencod\src\mv-search.c" lencod\src\nal.c lencod\src\nalu.c lencod\src\nalucommon.c lencod\src\output.c lencod\src\parset.c lencod\src\parsetcommon.c lencod\src\ratectl.c lencod\src\rdopt.c lencod\src\rdopt_coding_state.c lencod\src\refbuf.c lencod\src\rtp.c lencod\src\sei.c lencod\src\slice.c lencod\src\vlc.c lencod\src\weighted_prediction.c
+         annexb.c
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\annexb.c(113): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(211) : 参见“fopen”的声明
+         biariencode.c
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\biariencode.c(97): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
-     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\slice.c(888): warning C4028: 形参 1 与声明不同
+         block.c
+         cabac.c
+         configfile.c
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(249): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(273): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(211) : 参见“fopen”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(275): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(281): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(288): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(293): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(402): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(407): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(416): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(304) : 参见“sscanf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(418): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(425): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\string.h(112) : 参见“strcpy”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(429): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(304) : 参见“sscanf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(431): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(508): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(514): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(520): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(526): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(532): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(538): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(546): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(551): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(556): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(561): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(569): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(575): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(587): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(595): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(603): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(609): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(652): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(658): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(665): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(672): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(687): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(694): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(699): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(211) : 参见“fopen”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(701): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(705): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(211) : 参见“fopen”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(707): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(711): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(211) : 参见“fopen”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(713): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(721): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(731): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(211) : 参见“fopen”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(733): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(746): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(230) : 参见“fscanf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(747): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(230) : 参见“fscanf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(759): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(230) : 参见“fscanf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(760): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(230) : 参见“fscanf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(761): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(230) : 参见“fscanf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(762): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(230) : 参见“fscanf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(778): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(230) : 参见“fscanf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(781): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(784): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(230) : 参见“fscanf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(795): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(802): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(808): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(814): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(822): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(829): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(839): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(845): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(852): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(859): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(870): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(886): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(920): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(928): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(933): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(938): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(943): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(948): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(953): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(963): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(968): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(973): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(978): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(988): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\configfile.c(994): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+         context_ini.c
+         decoder.c
+         fast_me.c
+         filehandle.c
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\filehandle.c(99): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\filehandle.c(150): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+         fmo.c
+         header.c
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\header.c(590): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\string.h(195) : 参见“strncpy”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\header.c(596): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\string.h(195) : 参见“strncpy”的声明
+         image.c
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\image.c(338): warning C4996: '_ftime64': This function or variable may be unsafe. Consider using _ftime64_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\sys\timeb.h(131) : 参见“_ftime64”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\image.c(573): warning C4996: '_ftime64': This function or variable may be unsafe. Consider using _ftime64_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\sys\timeb.h(131) : 参见“_ftime64”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\image.c(578): warning C4244: “=”: 从“time_t”转换到“int”，可能丢失数据
+         intrarefresh.c
+         leaky_bucket.c
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\leaky_bucket.c(71): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(211) : 参见“fopen”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\leaky_bucket.c(79): warning C4996: 'fscanf': This function or variable may be unsafe. Consider using fscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(230) : 参见“fscanf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\leaky_bucket.c(148): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(211) : 参见“fopen”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\leaky_bucket.c(150): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+         lencod.c
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\lencod.c(135): warning C4087: “rand”: 用“void”参数列表声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\lencod.c(988): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(211) : 参见“fopen”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\lencod.c(990): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\lencod.c(1187): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(211) : 参见“fopen”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\lencod.c(1189): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(211) : 参见“fopen”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\lencod.c(1191): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\lencod.c(1213): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(211) : 参见“fopen”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\lencod.c(1215): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\lencod.c(1221): warning C4996: '_strdate': This function or variable may be unsafe. Consider using _strdate_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\time.h(198) : 参见“_strdate”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\lencod.c(1224): warning C4996: '_strtime': This function or variable may be unsafe. Consider using _strtime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\time.h(202) : 参见“_strtime”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\lencod.c(1305): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(211) : 参见“fopen”的声明
+         loopFilter.c
+         macroblock.c
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\macroblock.c(682): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\macroblock.c(1820): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\macroblock.c(1936): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\macroblock.c(1966): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\macroblock.c(1992): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\macroblock.c(1993): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\macroblock.c(2025): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\macroblock.c(2043): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\macroblock.c(2044): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\macroblock.c(2062): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\macroblock.c(2087): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\macroblock.c(2108): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\macroblock.c(2109): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\macroblock.c(2137): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\macroblock.c(2165): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\macroblock.c(2236): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\macroblock.c(2430): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\macroblock.c(2434): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\macroblock.c(2508): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\macroblock.c(2513): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\macroblock.c(2673): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\macroblock.c(2741): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\macroblock.c(2801): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\macroblock.c(2885): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\macroblock.c(2910): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\macroblock.c(2967): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\macroblock.c(3022): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\macroblock.c(3196): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(356) : 参见“sprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\macroblock.c(3213): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(356) : 参见“sprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\macroblock.c(3223): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(356) : 参见“sprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\macroblock.c(3235): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(356) : 参见“sprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\macroblock.c(3253): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(356) : 参见“sprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\macroblock.c(3364): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\macroblock.c(3411): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\macroblock.c(3443): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\macroblock.c(3491): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\macroblock.c(3533): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+         mb_access.c
+         mbuffer.c
+         memalloc.c
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\memalloc.c(377): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+         正在生成代码...
+         正在编译...
+         mv-search.c
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\mv-search.c(1690): warning C4996: '_ftime64': This function or variable may be unsafe. Consider using _ftime64_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\sys\timeb.h(131) : 参见“_ftime64”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\mv-search.c(1761): warning C4996: '_ftime64': This function or variable may be unsafe. Consider using _ftime64_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\sys\timeb.h(131) : 参见“_ftime64”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\mv-search.c(1766): warning C4244: “=”: 从“__time64_t”转换到“int”，可能丢失数据
+         nal.c
+         nalu.c
+         nalucommon.c
+         output.c
+         parset.c
+         parsetcommon.c
+         ratectl.c
+         rdopt.c
+         rdopt_coding_state.c
+         refbuf.c
+         rtp.c
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\rtp.c(324): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(211) : 参见“fopen”的声明
+         sei.c
+         slice.c
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\slice.c(459): warning C4047: “=”:“int (*)[16]”与“int *”的间接级别不同
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\slice.c(647): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\stdio.h(346) : 参见“_snprintf”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\slice.c(918): warning C4028: 形参 1 与声明不同
+         vlc.c
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\vlc.c(89): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\string.h(195) : 参见“strncpy”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\vlc.c(128): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\string.h(195) : 参见“strncpy”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\vlc.c(170): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\string.h(195) : 参见“strncpy”的声明
+     1>d:\files\jm_code_8.6\jmpro\jmpro\jm8.6final\jm\lencod\src\vlc.c(213): warning C4996: 'strncpy': This function or variable may be unsafe. Consider using strncpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 d:\software\visual2013\vc\include\string.h(195) : 参见“strncpy”的声明
+         weighted_prediction.c
+         正在生成代码...
        Link:
          D:\software\Visual2013\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"./bin/lencod.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:".\lencod/Debug/lencod.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:".\bin\lencod.lib" /MACHINE:X86 /SAFESEH .\lencod/Debug/annexb.obj
          .\lencod/Debug/biariencode.obj
@@ -54,4 +385,4 @@
 
 生成成功。
 
-已用时间 00:00:01.31
+已用时间 00:00:04.22

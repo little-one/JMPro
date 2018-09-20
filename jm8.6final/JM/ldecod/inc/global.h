@@ -49,10 +49,14 @@ typedef unsigned int    u_int32;
   typedef long long int64;
 # define INT64_MIN        (-9223372036854775807LL - 1LL)
 #endif
+
+
 #ifndef MY_SECRET_DECODE
 #define MY_SECRET_DECODE
   int Decode_PrioritySwitch;
   int Decode_EmbedCodeFlg;
+  int DecodeCurFrameFlg;			// 0是I帧， 1是P帧， 2是B帧
+  int FrameDecodeFlgArray[3];		// 0是I帧， 1是P帧， 2是B帧
 #endif
 
 #ifndef MY_GET_PSNR_DECODE

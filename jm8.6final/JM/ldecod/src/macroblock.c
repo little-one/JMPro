@@ -499,23 +499,6 @@ void reset_coeffs()
 	for (i = 0; i < 4; i++)
 		for (j = 0; j < 6; j++)
 			img->nz_coeff[img->current_mb_nr][i][j] = 0;
-
-#ifdef MY_SECRET_DECODE
-	//if (Decode_EmbedCodeFlg)
-	//{
-	//	for (int tj = 0; tj < 6; tj++)
-	//	{
-	//		for (int ti = 0; ti < 4; ti++)
-	//		{
-	//			for (int tk = 0; tk < 16; tk++)
-	//			{
-	//				img->cofAC[tj][ti][0][tk] = 0;
-	//				img->cofAC[tj][ti][1][tk] = 0;
-	//			}
-	//		}
-	//	}
-	//}
-#endif
 }
 
 void field_flag_inference()
@@ -2765,16 +2748,6 @@ void readCBPandCoeffsFromNAL(struct img_par *img, struct inp_par *inp)
 						else
 						{
 							img->nz_coeff[img->current_mb_nr][i][j] = 0;
-#ifdef MY_SECRET_DECODE
-							//if (Decode_EmbedCodeFlg)
-							//{
-							//	for (int ti = 0; ti < 16; ti++)
-							//	{
-							//		img->cofAC[j][i][0][ti] = 0;
-							//		img->cofAC[j][i][1][ti] = 0;
-							//	}
-							//}
-#endif
 						}
 					}
 				}
@@ -2948,29 +2921,6 @@ void readCBPandCoeffsFromNAL(struct img_par *img, struct inp_par *inp)
 		for (j = 4; j < 6; j++)
 			for (i = 0; i < 4; i++)
 				img->nz_coeff[img->current_mb_nr][i][j] = 0;
-#ifdef MY_SECRET_DECODE
-	//if (cbp <= 31)
-	//{
-	//	if (Decode_EmbedCodeFlg)
-	//	{
-	//		int my_b8 = 4 + i / 2;
-	//		int my_b4 = j - 4 + i % 2;
-	//		for (j = 4; j < 6; j++)
-	//		{
-	//			for (i = 0; i < 4; i++)
-	//			{
-	//				for (int tk = 0; tk < 16; tk++)
-	//				{
-	//					/*img->cofAC[my_b8][my_b4][0][tk] = levarr[tk];
-	//					img->cofAC[my_b8][my_b4][1][tk] = runarr[tk];*/
-	//					img->cofAC[j][i][0][tk] = levarr[tk];
-	//					img->cofAC[j][i][1][tk] = runarr[tk];
-	//				}
-	//			}
-	//		}
-	//	}
-	//}
-#endif
 
 	// chroma AC coeff, all zero fram start_scan
 	uv = -1;

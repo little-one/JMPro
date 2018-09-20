@@ -120,6 +120,10 @@ void Clear_Motion_Search_Module();
  */
 int main(int argc, char **argv)
 {
+	FrameEncodeFlgArray[0] = 0;
+	FrameEncodeFlgArray[1] = 1;
+	FrameEncodeFlgArray[2] = 0;
+
 	Encode_PsnrFlg = 0;
 	SecretPosition = 0;
 	SecretBitNum = 80;
@@ -198,10 +202,27 @@ int main(int argc, char **argv)
 #ifdef MY_SECRET_ENCODE
 		if (Encode_PrioritySwitch)
 		{
-			if ((img->number) % 3 == 0)
-				Encode_EmbedCodeFlg = 1;
-			else
-				Encode_EmbedCodeFlg = 0;
+			EncodeCurFrameFlg = -1;
+			if (FrameEncodeFlgArray[0])
+			{
+				if ((img->number) % 3 == 0)
+				{
+					Encode_EmbedCodeFlg = 1;
+					EncodeCurFrameFlg = 0;
+				}
+				else
+					Encode_EmbedCodeFlg = 0;
+			}
+			if (FrameEncodeFlgArray[1])
+			{
+				if ((img->number + 1) % 3 == 0)
+				{
+					Encode_EmbedCodeFlg = 1;
+					EncodeCurFrameFlg = 1;
+				}
+				else
+					Encode_EmbedCodeFlg = 0;
+			}
 		}
 		else
 			Encode_EmbedCodeFlg = 0;

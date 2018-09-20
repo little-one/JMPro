@@ -101,6 +101,11 @@ int SecretBitNum;
 int main(int argc, char **argv)
 {
 
+	FrameDecodeFlgArray[0] = 0;
+	FrameDecodeFlgArray[1] = 1;
+	FrameDecodeFlgArray[2] = 0;
+	
+	
 	SecretBinaryBitStream = NULL;
 	SecretPosition = 0;
 	SecretBitNum = 80;

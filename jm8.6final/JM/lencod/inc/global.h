@@ -67,6 +67,9 @@ typedef long long int64;
 #define MY_SECRET_ENCODE
 int Encode_EmbedCodeFlg;
 int Encode_PrioritySwitch;
+// 0ÊÇIÖ¡£¬ 1ÊÇPÖ¡£¬ 2ÊÇBÖ¡
+int EncodeCurFrameFlg;
+int FrameEncodeFlgArray[3];
 #endif
 
 #ifndef MY_GET_PSNR

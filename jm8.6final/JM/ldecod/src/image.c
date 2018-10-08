@@ -1383,21 +1383,24 @@ void decode_one_slice(struct img_par *img, struct inp_par *inp)
 		read_flag = read_one_macroblock(img, inp);
 
 #ifdef MY_SECRET_DECODE
-		for (int i = 0; i < 6; i++)
+		if (Decode_EmbedCodeFlg)
 		{
-			for (int j = 0; j < 4; j++)
+			for (int i = 0; i < 6; i++)
 			{
-				if (img->nz_coeff[img->current_mb_nr][j][i] == 0)
+				for (int j = 0; j < 4; j++)
 				{
-					for (int tk = 0; tk < 16; tk++)
+					if (img->nz_coeff[img->current_mb_nr][j][i] == 0)
 					{
-						img->cofAC[i][j][0][tk] = 0;
+						for (int tk = 0; tk < 16; tk++)
+						{
+							img->cofAC[i][j][0][tk] = 0;
+						}
 					}
 				}
 			}
-		}
-		if (Decode_EmbedCodeFlg)
-		{
+			int(*FrameI_Extract)(char) = RobustExtract_FrameI;
+			FrameI_Extract = FragileExtract_FrameI;
+
 			switch (DecodeCurFrameFlg)
 			{
 			case 0:		//I帧抽取
@@ -1414,128 +1417,11 @@ void decode_one_slice(struct img_par *img, struct inp_par *inp)
 					SecretPosition++;
 					}*/
 					//使能开关
-					int EnableFlg = 0;
-					int b4x4num = 0;
-					//首先检查标识位
-
-					int RowNum, ColNum;
-					int sPosition;
-					int(*tLevel)[16] = NULL;
-
-					for (int MarkPosition = 0; MarkPosition < 8; MarkPosition++)
+					char sCh;
+					if (FrameI_Extract(&sCh))
 					{
-						RowNum = SearchOrderForMark[MarkPosition][0];
-						ColNum = SearchOrderForMark[MarkPosition][1];
-
-						tLevel = img->cofAC[RowNum][ColNum][0];
-
-						sPosition = -1;
-						for (int j = 0; j < 16; j++)
-						{
-							//int letmelooklook = *(*tLevel + sPosition + 1);
-							if (*(*tLevel + sPosition + 1) != 0)
-							{
-								sPosition++;
-							}
-							else
-								break;
-						}
-						if (sPosition == -1)
-						{
-							continue;
-						}
-						else
-						{
-							EnableFlg = 1;
-							break;
-						}
-					}
-					if (EnableFlg)
-					{
-						///int letmelooklook = *(*())
-						if (*(*tLevel + sPosition) % 2 != 0)
-							EnableFlg = 1;
-						else
-							EnableFlg = 0;
-					}
-					//int* tarray = &(img->cofAC[LTrNum][LTcNum][0]);
-					//int sPosition = GetLastNonZeroPosition(tarray, 16);
-					//if (sPosition > -1)		//说明第4块标识位可用，则检测其中的标识
-					//{
-					//	if (tarray[sPosition] % 2 != 0)
-					//	{
-					//		EnableFlg = 1;
-					//		b4x4num = 4;
-					//	}
-					//}
-					//else     //第4块标识位不可用，则检测第3块
-					//{
-					//	LTrNum = 1;
-					//	LTcNum = 2;
-					//	MyIndexConvert(&LTrNum, &LTcNum, 0);
-					//	tarray = &(img->cofAC[LTrNum][LTcNum][0]);
-					//	sPosition = GetLastNonZeroPosition(tarray, 16);
-					//	if (sPosition > -1)		//第3块标识位可用
-					//	{
-					//		if (tarray[sPosition] % 2 != 0)
-					//		{
-					//			EnableFlg = 1;
-					//			b4x4num = 3;
-					//		}
-					//	}
-					//	else
-					//		EnableFlg = 0;
-					//}
-
-					if (EnableFlg)
-					{
-						//开始检测第1个8x8块的能量
-						int BlockIndex1_0 = 1;
-						int BlockIndex1_1 = 1;
-						int BlockIndex1_2 = 1;
-						int BlockIndex1_3 = 1;
-						int subBlockIndex1_0 = 0;
-						int subBlockIndex1_1 = 1;
-						int subBlockIndex1_2 = 2;
-						int subBlockIndex1_3 = 3;
-						MyIndexConvert(&BlockIndex1_0, &subBlockIndex1_0, 0);
-						MyIndexConvert(&BlockIndex1_1, &subBlockIndex1_1, 1);
-						MyIndexConvert(&BlockIndex1_2, &subBlockIndex1_2, 2);
-						MyIndexConvert(&BlockIndex1_3, &subBlockIndex1_3, 3);
-
-						int BlockIndex2_0 = 2;
-						int BlockIndex2_1 = 2;
-						int BlockIndex2_2 = 2;
-						int BlockIndex2_3 = 2;
-						int subBlockIndex2_0 = 0;
-						int subBlockIndex2_1 = 1;
-						int subBlockIndex2_2 = 2;
-						int subBlockIndex2_3 = 3;
-						MyIndexConvert(&BlockIndex2_0, &subBlockIndex2_0, 0);
-						MyIndexConvert(&BlockIndex2_1, &subBlockIndex2_1, 1);
-						MyIndexConvert(&BlockIndex2_2, &subBlockIndex2_2, 2);
-						MyIndexConvert(&BlockIndex2_3, &subBlockIndex2_3, 3);
-
-						int RTEnergySum = 0;
-						int LDEnergySum = 0;
-						for (int i = 0; i < 16; i++)
-						{
-							RTEnergySum += abs(img->cofAC[BlockIndex1_0][subBlockIndex1_0][0][i]);
-							RTEnergySum += abs(img->cofAC[BlockIndex1_3][subBlockIndex1_3][0][i]);
-							RTEnergySum += abs(img->cofAC[BlockIndex1_1][subBlockIndex1_1][0][i]);
-							RTEnergySum += abs(img->cofAC[BlockIndex1_2][subBlockIndex1_2][0][i]);
-
-							LDEnergySum += abs(img->cofAC[BlockIndex2_0][subBlockIndex2_0][0][i]);
-							LDEnergySum += abs(img->cofAC[BlockIndex2_1][subBlockIndex2_1][0][i]);
-							LDEnergySum += abs(img->cofAC[BlockIndex2_2][subBlockIndex2_2][0][i]);
-							LDEnergySum += abs(img->cofAC[BlockIndex2_3][subBlockIndex2_3][0][i]);
-						}
-						char sCh = RTEnergySum > LDEnergySum ? '1' : '0';
 						*(SecretBinaryBitStream + SecretPosition) = sCh;
 						SecretPosition++;
-#ifdef OUTPUT_EXTRACT_POSITION
-						printf("在第%d帧的第%d个宏块中提取出密文的第%d位, 标识位坐标: %d, %d \n:", img->number, img->current_mb_nr, SecretPosition, RowNum, ColNum);
-#endif
 					}
 				}
 				break;
@@ -1918,5 +1804,189 @@ int GetLastNonZeroPosition(int* tarray, int size)
 			break;
 	}
 	return buff;
+}
+int RobustExtract_FrameI(char* secretCh)
+{
+	int result = 0;
+	int EnableFlg = 0;
+	int b4x4num = 0;
+	//首先检查标识位
+
+	int RowNum, ColNum;
+	int sPosition;
+	int(*tLevel)[16] = NULL;
+
+	for (int MarkPosition = 0; MarkPosition < 8; MarkPosition++)
+	{
+		RowNum = SearchOrderForMark[MarkPosition][0];
+		ColNum = SearchOrderForMark[MarkPosition][1];
+
+		tLevel = img->cofAC[RowNum][ColNum][0];
+
+		sPosition = -1;
+		for (int j = 0; j < 16; j++)
+		{
+			//int letmelooklook = *(*tLevel + sPosition + 1);
+			if (*(*tLevel + sPosition + 1) != 0)
+			{
+				sPosition++;
+			}
+			else
+				break;
+		}
+		if (sPosition == -1)
+		{
+			continue;
+		}
+		else
+		{
+			EnableFlg = 1;
+			break;
+		}
+	}
+	if (EnableFlg)
+	{
+		///int letmelooklook = *(*())
+		if (*(*tLevel + sPosition) % 2 != 0)
+			EnableFlg = 1;
+		else
+			EnableFlg = 0;
+	}
+
+	if (EnableFlg)
+	{
+		//开始检测第1个8x8块的能量
+		int BlockIndex1_0 = 1;
+		int BlockIndex1_1 = 1;
+		int BlockIndex1_2 = 1;
+		int BlockIndex1_3 = 1;
+		int subBlockIndex1_0 = 0;
+		int subBlockIndex1_1 = 1;
+		int subBlockIndex1_2 = 2;
+		int subBlockIndex1_3 = 3;
+		MyIndexConvert(&BlockIndex1_0, &subBlockIndex1_0, 0);
+		MyIndexConvert(&BlockIndex1_1, &subBlockIndex1_1, 1);
+		MyIndexConvert(&BlockIndex1_2, &subBlockIndex1_2, 2);
+		MyIndexConvert(&BlockIndex1_3, &subBlockIndex1_3, 3);
+
+		int BlockIndex2_0 = 2;
+		int BlockIndex2_1 = 2;
+		int BlockIndex2_2 = 2;
+		int BlockIndex2_3 = 2;
+		int subBlockIndex2_0 = 0;
+		int subBlockIndex2_1 = 1;
+		int subBlockIndex2_2 = 2;
+		int subBlockIndex2_3 = 3;
+		MyIndexConvert(&BlockIndex2_0, &subBlockIndex2_0, 0);
+		MyIndexConvert(&BlockIndex2_1, &subBlockIndex2_1, 1);
+		MyIndexConvert(&BlockIndex2_2, &subBlockIndex2_2, 2);
+		MyIndexConvert(&BlockIndex2_3, &subBlockIndex2_3, 3);
+
+		int RTEnergySum = 0;
+		int LDEnergySum = 0;
+		for (int i = 0; i < 16; i++)
+		{
+			RTEnergySum += abs(img->cofAC[BlockIndex1_0][subBlockIndex1_0][0][i]);
+			RTEnergySum += abs(img->cofAC[BlockIndex1_3][subBlockIndex1_3][0][i]);
+			RTEnergySum += abs(img->cofAC[BlockIndex1_1][subBlockIndex1_1][0][i]);
+			RTEnergySum += abs(img->cofAC[BlockIndex1_2][subBlockIndex1_2][0][i]);
+
+			LDEnergySum += abs(img->cofAC[BlockIndex2_0][subBlockIndex2_0][0][i]);
+			LDEnergySum += abs(img->cofAC[BlockIndex2_1][subBlockIndex2_1][0][i]);
+			LDEnergySum += abs(img->cofAC[BlockIndex2_2][subBlockIndex2_2][0][i]);
+			LDEnergySum += abs(img->cofAC[BlockIndex2_3][subBlockIndex2_3][0][i]);
+		}
+		char sCh = RTEnergySum > LDEnergySum ? '1' : '0';
+		//*(SecretBinaryBitStream + SecretPosition) = sCh;
+		//SecretPosition++;
+		*secretCh = sCh;
+		result = 1;
+#ifdef OUTPUT_EXTRACT_POSITION
+		printf("在第%d帧的第%d个宏块中提取出密文的第%d位, 标识位坐标: %d, %d \n:", img->number, img->current_mb_nr, SecretPosition, RowNum, ColNum);
+#endif
+	}
+	return result;
+}
+int RobustExtract_FrameP(char* secretCh)
+{
+	return 0;
+}
+int FragileExtract_FrameI(char* secretCh)
+{
+	int result = 1;
+	int RowNum, ColNum;
+	int sPosition;
+	int(*tLevel)[16] = NULL;
+	int EnableFlg = 0;
+	if (img->current_mb_nr == 88)
+	{
+		int a = 0;
+	}
+	//检查标识位
+	for (int MarkPosition = 0; MarkPosition < 8; MarkPosition++)
+	{
+		RowNum = SearchOrderForMark[MarkPosition][0];
+		ColNum = SearchOrderForMark[MarkPosition][1];
+
+		tLevel = img->cofAC[RowNum][ColNum][0];
+
+		sPosition = -1;
+		for (int j = 0; j < 16; j++)
+		{
+			//int letmelooklook = *(*tLevel + sPosition + 1);
+			if (*(*tLevel + sPosition + 1) != 0)
+			{
+				sPosition++;
+			}
+			else
+				break;
+		}
+		if (sPosition == -1)
+		{
+			continue;
+		}
+		else
+		{
+			EnableFlg = 1;
+			break;
+		}
+	}
+	if (EnableFlg)
+	{
+		if (*(*tLevel + sPosition) % 2 != 0)
+			EnableFlg = 1;
+		else
+		{
+			EnableFlg = 0;
+			result = 0;
+		}
+	}
+	else
+		result = 0;
+
+	if (EnableFlg)
+	{
+		Macroblock* myMB = &(img->mb_data[img->current_mb_nr]);
+		if (myMB->mb_type != 9)
+		{
+			result = 0;
+		}
+		else
+		{
+			int myMB_X, myMB_Y;
+			get_mb_block_pos(img->current_mb_nr, &myMB_X, &myMB_Y);
+
+			int b4_x = myMB_X * 4;
+			int b4_y = myMB_Y * 4;
+
+			int dirc = img->ipredmode[b4_x][b4_y];
+			*secretCh = dirc % 2 == 0 ? '0' : '1';
+		}
+	}
+	return result;
+}
+int FragileExtract_FrameP(char* secretCh)
+{
+	return 0;
 }
 #endif

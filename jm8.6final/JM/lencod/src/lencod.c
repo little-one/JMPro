@@ -120,8 +120,8 @@ void Clear_Motion_Search_Module();
  */
 int main(int argc, char **argv)
 {
-	FrameEncodeFlgArray[0] = 0;
-	FrameEncodeFlgArray[1] = 1;
+	FrameEncodeFlgArray[0] = 1;
+	FrameEncodeFlgArray[1] = 0;
 	FrameEncodeFlgArray[2] = 0;
 
 	Encode_PsnrFlg = 0;
@@ -832,7 +832,7 @@ void report()
 		stat->bitrate_P = (stat->bit_ctr_0 + stat->bit_ctr_P + stat->bit_ctr_parametersets)*(float)(frame_rate) / (float)(input->no_frames + Bframe_ctr);
 
 #ifdef _ADAPT_LAST_GROUP_
-		stat->bitrate_B=(stat->bit_ctr_B)*(float)(frame_rate)/(float) (input->no_frames + Bframe_ctr);    
+		stat->bitrate_B = (stat->bit_ctr_B)*(float)(frame_rate) / (float)(input->no_frames + Bframe_ctr);
 #else
 		stat->bitrate_B = (stat->bit_ctr_B)*(float)(frame_rate) / (float)(input->no_frames + Bframe_ctr);
 #endif
@@ -1222,7 +1222,7 @@ void report()
 	fprintf(p_log, "| %1.5s |", timebuf);
 
 	_strtime(timebuf);
-	fprintf(p_log," % 1.5s |",timebuf);
+	fprintf(p_log, " % 1.5s |", timebuf);
 #else
 	now = time ((time_t *) NULL); // Get the system time and put it into 'now' as 'calender time'
 	time (&now);

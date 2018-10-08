@@ -1223,6 +1223,13 @@ int findNZeroPosition(int* ScanArray, int ArraySize, int currPosition);		//µİ¹éÑ
 void MyIndexConvert(int* fD, int* sD, int direction);
 
 int GetLastNonZeroPosition(int* tarray, int size);	//·µ»Ø´Ó×ó±ß¿ªÊ¼µÄ×îºóÒ»¸ö·ÇÁãÔª
+
+//Â³°ôÇ¶ÈëºÍÒ×ËéÇ¶Èë
+int RobustEmbed_FrameI(char secretCh);
+int RobustEmbed_FrameP(char secretCh);
+int FragileEmbed_FrameI(char secretCh);
+int FragileEmbed_FrameP(char secretCh);
+
 #endif
 
 #endif

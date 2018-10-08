@@ -74,6 +74,8 @@ static const int SearchOrderForMark[8][2] = {
 #define OUTPUT_EMBED_POSITION
 #endif
 
+#undef OUTPUT_EMBED_POSITION
+
 static const int dequant_coef[6][4][4] = {
 	{ { 10, 13, 10, 13 }, { 13, 16, 13, 16 }, { 10, 13, 10, 13 }, { 13, 16, 13, 16 } },
 	{ { 11, 14, 11, 14 }, { 14, 18, 14, 18 }, { 11, 14, 11, 14 }, { 14, 18, 14, 18 } },
@@ -363,248 +365,37 @@ int encode_one_slice(int SliceGroupId, Picture *pic)
 						}
 					}
 				}
+				
+				int(*FrameI_Embed)(char) = RobustEmbed_FrameI;
+				FrameI_Embed = FragileEmbed_FrameI;
+
 				switch (EncodeCurFrameFlg)
 				{
-				case 0:
+				case 0:		//I帧嵌入
 					if (SecretPosition < SecretBitNum)
 					{
 						char secretCh = *(SecretBinaryBitStream + SecretPosition);
 						SecretPosition++;
-
-						byte EnergySwitch = 0;	//能量块开关，如果能量分布满足密文则置1
-						byte MarkSwitch = 0;	//标识位开关，如果有可写入标识，则置1
-
-
-						/////////////////////////////////////////////////////////////////////
-						//						    能量块计算							   //
-						/////////////////////////////////////////////////////////////////////
-						//计算左上和右下的4x4块的能量总和,以及右上和左下块的能量总和
-						int RTEnergySum = 0;
-						int LDEnergySum = 0;
-						//计算四个4x4块的首个0前的位置并且将能量的绝对值累加
-						int fPosition1_0 = 0;
-						int fPosition1_1 = 0;
-						int fPosition1_2 = 0;
-						int fPosition1_3 = 0;
-						int fArray1_0[16];
-						int fArray1_1[16];
-						int fArray1_2[16];
-						int fArray1_3[16];
-
-						int fPosition2_0 = 0;
-						int fPosition2_1 = 0;
-						int fPosition2_2 = 0;
-						int fPosition2_3 = 0;
-						int fArray2_0[16];
-						int fArray2_1[16];
-						int fArray2_2[16];
-						int fArray2_3[16];
-
-						for (int i = 0; i < 16; i++)
-						{
-							fArray1_0[i] = img->cofAC[1][0][0][i];
-							fArray1_1[i] = img->cofAC[1][1][0][i];
-							fArray1_2[i] = img->cofAC[1][2][0][i];
-							fArray1_3[i] = img->cofAC[1][3][0][i];
-							fArray2_0[i] = img->cofAC[2][0][0][i];
-							fArray2_1[i] = img->cofAC[2][1][0][i];
-							fArray2_2[i] = img->cofAC[2][2][0][i];
-							fArray2_3[i] = img->cofAC[2][3][0][i];
-						}
-						fPosition1_0 = GetLastNonZeroPosition(fArray1_0, 16);
-						fPosition1_1 = GetLastNonZeroPosition(fArray1_1, 16);
-						fPosition1_2 = GetLastNonZeroPosition(fArray1_2, 16);
-						fPosition1_3 = GetLastNonZeroPosition(fArray1_3, 16);
-						fPosition2_0 = GetLastNonZeroPosition(fArray2_0, 16);
-						fPosition2_1 = GetLastNonZeroPosition(fArray2_1, 16);
-						fPosition2_2 = GetLastNonZeroPosition(fArray2_2, 16);
-						fPosition2_3 = GetLastNonZeroPosition(fArray2_3, 16);
-
-						for (int i = 0; i < 16; i++)
-						{
-							if (i <= fPosition1_0)
-								RTEnergySum += abs(img->cofAC[1][0][0][i]);
-							if (i <= fPosition1_3)
-								RTEnergySum += abs(img->cofAC[1][3][0][i]);
-							if (i <= fPosition1_1)
-								RTEnergySum += abs(img->cofAC[1][1][0][i]);
-							if (i <= fPosition1_2)
-								RTEnergySum += abs(img->cofAC[1][2][0][i]);
-							if (i <= fPosition2_0)
-								LDEnergySum += abs(img->cofAC[2][0][0][i]);
-							if (i <= fPosition2_3)
-								LDEnergySum += abs(img->cofAC[2][3][0][i]);
-							if (i <= fPosition2_1)
-								LDEnergySum += abs(img->cofAC[2][1][0][i]);
-							if (i <= fPosition2_2)
-								LDEnergySum += abs(img->cofAC[2][2][0][i]);
-
-						}
-
-						//比较能量获得该位数据
-						char curData = (RTEnergySum > LDEnergySum) ? '1' : '0';
-						if (curData == secretCh)
-							EnergySwitch = 1;
-
-						/////////////////////////////////////////////////////////////////////
-						//						    标识位搜索							   //
-						/////////////////////////////////////////////////////////////////////
-						int MarkB8, MarkB4;
-						int(*tLevel)[16] = NULL;
-						int sPosition = 0;
-						for (int i = 0; i < 8; i++)
-						{
-							MarkB8 = SearchOrderForMark[i][0];
-							MarkB4 = SearchOrderForMark[i][1];
-							tLevel = img->cofAC[MarkB8][MarkB4][0];
-
-							//寻找最后一个非零位存入sPosition
-							sPosition = -1;
-							for (int j = 0; j < 16; j++)
-							{
-								if (*(*tLevel + sPosition + 1) != 0)
-								{
-									sPosition++;
-								}
-								else
-									break;
-							}
-							if (sPosition == -1)	//说明该块为全零，则需要跳过
-							{
-								continue;
-							}
-							else     //该块有满足条件的嵌入位，则停止搜索，锁定该嵌入位
-							{
-								MarkSwitch = 1;		//将标识开关置为1
-								break;
-							}
-						}
-
-						if (MarkSwitch)
-						{
-							if (EnergySwitch)	//修改标识位
-							{
-								if ((*(*tLevel + sPosition)) % 2 == 0)
-								{
-									if ((*(*tLevel + sPosition)) > 0)
-										*(*tLevel + sPosition) -= 1;
-									else
-										*(*tLevel + sPosition) += 1;
-								}
-#ifdef OUTPUT_EMBED_POSITION
-								printf("在第%d帧的第%d个宏块中嵌入密文的第%d位, 标识位坐标: %d, %d \n:", img->number, CurrentMbAddr, SecretPosition, MarkB8, MarkB4);
-#endif
-							}
-							else     //将标识位写入0并回退密文指针
-							{
-								if ((*(*tLevel + sPosition)) % 2 == 1)
-								{
-									*(*tLevel + sPosition) += 1;
-								}
-								else if ((*(*tLevel + sPosition)) % 2 == -1)
-								{
-									*(*tLevel + sPosition) -= 1;
-								}
-								SecretPosition--;
-							}
-						}
-						else     //回退密文指针
-						{
+						if (!FrameI_Embed(secretCh))
 							SecretPosition--;
-						}
-						//if (secretCh == curData)	//说明数据与密文一致，可以使用该宏块，检测标识位是否可用
-						//{
-						//	//首先检测第4个4x4块是否可用
-						//	int tLevel[16];
-						//	for (int i = 0; i < 16; i++)
-						//		tLevel[i] = img->cofAC[1][3][0][i];
-						//	int sPosition = GetLastNonZeroPosition(tLevel, 16);
-						//	if (sPosition != -1)	//说明该4x4块可用，则将标识位嵌入此块
-						//	{
-						//		if (tLevel[sPosition] % 2 == 0)
-						//		{
-						//			if (tLevel[sPosition] > 0)
-						//				tLevel[sPosition] -= 1;
-						//			else
-						//				tLevel[sPosition] += 1;
-						//		}
-						//		//将修改后的level写回原数组中
-						//		img->cofAC[1][3][0][sPosition] = tLevel[sPosition];
-						//		//printf("在第%d帧的第%d个宏块中嵌入第%d位,密文潜在了第4个4x4块中\n", img->number, CurrentMbAddr, SecretPosition);
-						//	}
-						//	else    //第4块不可用，则检测第3块
-						//	{
-						//		for (int i = 0; i < 16; i++)
-						//			tLevel[i] = img->cofAC[1][2][0][i];
-						//		sPosition = 0;
-						//		sPosition = GetLastNonZeroPosition(tLevel, 16);
-						//		if (sPosition != -1)		//说明第3块可用，将标识嵌入此块
-						//		{
-						//			if (tLevel[sPosition] % 2 == 0)
-						//			{
-						//				if (tLevel[sPosition] > 0)
-						//					tLevel[sPosition] -= 1;
-						//				else
-						//					tLevel[sPosition] += 1;
-						//			}
-						//			//将修改后的level写回原数组中
-						//			img->cofAC[1][2][0][sPosition] = tLevel[sPosition];
-						//			//printf("在第%d帧的第%d个宏块中嵌入第%d位,密文潜在了第3个4x4块中\n", img->number, CurrentMbAddr, SecretPosition);
-						//		}
-						//		else      //标识位不可用，将密文信息回退
-						//		{
-						//			SecretPosition--;
-						//		}
-						//	}
-						//}
-						//else
-						//{
-						//	//将标识位置0并回退密文信息
-						//	int tLevel[16];
-						//	for (int i = 0; i < 16; i++)
-						//		tLevel[i] = img->cofAC[1][3][0][i];
-						//	int sPosition = GetLastNonZeroPosition(tLevel, 16);
-						//	if (sPosition != -1)	//说明该4x4块可用，则将标识位嵌入此块
-						//	{
-						//		if (tLevel[sPosition] % 2 == 1)
-						//		{
-						//			tLevel[sPosition] += 1;
-						//		}
-						//		else if (tLevel[sPosition] % 2 == -1)
-						//		{
-						//			tLevel[sPosition] -= 1;
-						//		}
-						//		//将修改后的level写回原数组中
-						//		img->cofAC[1][3][0][sPosition] = tLevel[sPosition];
-						//	}
-						//	else    //第4块不可用，则检测第3块
-						//	{
-						//		for (int i = 0; i < 16; i++)
-						//			tLevel[i] = img->cofAC[1][2][0][i];
-						//		sPosition = 0;
-						//		sPosition = GetLastNonZeroPosition(tLevel, 16);
-						//		if (sPosition != -1)		//说明第3块可用，将标识嵌入此块
-						//		{
-						//			if (tLevel[sPosition] % 2 == 1)
-						//			{
-						//				tLevel[sPosition] += 1;
-						//			}
-						//			else if (tLevel[sPosition] % 2 == -1)
-						//			{
-						//				tLevel[sPosition] -= 1;
-						//			}
-						//			//将修改后的level写回原数组中
-						//			img->cofAC[1][2][0][sPosition] = tLevel[sPosition];
-						//		}
-						//	}
-						//	SecretPosition--;
-						//}
-
+						/*if (!RobustEmbed_FrameI(secretCh))
+							SecretPosition--;*/
+						/*if (!FragileEmbed_FrameI(secretCh))
+							SecretPosition--;*/
 					}
 					break;
-				case 1:
+				case 1:		//P帧嵌入
 					if (SecretPosition < SecretBitNum)
 					{
+						Macroblock* myMB = &(img->mb_data[img->current_mb_nr]);
+						if (myMB->mb_type == 0)
+							break;
+
+						//读取密文
+						char secretCh = *(SecretBinaryBitStream + SecretPosition);
+						SecretPosition++;
+
+
 
 					}
 					break;
@@ -976,6 +767,260 @@ int GetLastNonZeroPosition(int* tarray, int size)
 	}
 	return buff;
 }
+
+int RobustEmbed_FrameI(char secretCh)
+{
+	int result = 1;
+	byte EnergySwitch = 0;	//能量块开关，如果能量分布满足密文则置1
+	byte MarkSwitch = 0;	//标识位开关，如果有可写入标识，则置1
+	/////////////////////////////////////////////////////////////////////
+	//						    能量块计算							   //
+	/////////////////////////////////////////////////////////////////////
+	//计算左上和右下的4x4块的能量总和,以及右上和左下块的能量总和
+	int RTEnergySum = 0;
+	int LDEnergySum = 0;
+	//计算四个4x4块的首个0前的位置并且将能量的绝对值累加
+	int fPosition1_0 = 0;
+	int fPosition1_1 = 0;
+	int fPosition1_2 = 0;
+	int fPosition1_3 = 0;
+	int fArray1_0[16];
+	int fArray1_1[16];
+	int fArray1_2[16];
+	int fArray1_3[16];
+
+	int fPosition2_0 = 0;
+	int fPosition2_1 = 0;
+	int fPosition2_2 = 0;
+	int fPosition2_3 = 0;
+	int fArray2_0[16];
+	int fArray2_1[16];
+	int fArray2_2[16];
+	int fArray2_3[16];
+
+	for (int i = 0; i < 16; i++)
+	{
+		fArray1_0[i] = img->cofAC[1][0][0][i];
+		fArray1_1[i] = img->cofAC[1][1][0][i];
+		fArray1_2[i] = img->cofAC[1][2][0][i];
+		fArray1_3[i] = img->cofAC[1][3][0][i];
+		fArray2_0[i] = img->cofAC[2][0][0][i];
+		fArray2_1[i] = img->cofAC[2][1][0][i];
+		fArray2_2[i] = img->cofAC[2][2][0][i];
+		fArray2_3[i] = img->cofAC[2][3][0][i];
+	}
+	fPosition1_0 = GetLastNonZeroPosition(fArray1_0, 16);
+	fPosition1_1 = GetLastNonZeroPosition(fArray1_1, 16);
+	fPosition1_2 = GetLastNonZeroPosition(fArray1_2, 16);
+	fPosition1_3 = GetLastNonZeroPosition(fArray1_3, 16);
+	fPosition2_0 = GetLastNonZeroPosition(fArray2_0, 16);
+	fPosition2_1 = GetLastNonZeroPosition(fArray2_1, 16);
+	fPosition2_2 = GetLastNonZeroPosition(fArray2_2, 16);
+	fPosition2_3 = GetLastNonZeroPosition(fArray2_3, 16);
+
+	for (int i = 0; i < 16; i++)
+	{
+		if (i <= fPosition1_0)
+			RTEnergySum += abs(img->cofAC[1][0][0][i]);
+		if (i <= fPosition1_3)
+			RTEnergySum += abs(img->cofAC[1][3][0][i]);
+		if (i <= fPosition1_1)
+			RTEnergySum += abs(img->cofAC[1][1][0][i]);
+		if (i <= fPosition1_2)
+			RTEnergySum += abs(img->cofAC[1][2][0][i]);
+		if (i <= fPosition2_0)
+			LDEnergySum += abs(img->cofAC[2][0][0][i]);
+		if (i <= fPosition2_3)
+			LDEnergySum += abs(img->cofAC[2][3][0][i]);
+		if (i <= fPosition2_1)
+			LDEnergySum += abs(img->cofAC[2][1][0][i]);
+		if (i <= fPosition2_2)
+			LDEnergySum += abs(img->cofAC[2][2][0][i]);
+
+	}
+
+	//比较能量获得该位数据
+	char curData = (RTEnergySum > LDEnergySum) ? '1' : '0';
+	if (curData == secretCh)
+		EnergySwitch = 1;
+
+	/////////////////////////////////////////////////////////////////////
+	//						    标识位搜索							   //
+	/////////////////////////////////////////////////////////////////////
+	int MarkB8, MarkB4;
+	int(*tLevel)[16] = NULL;
+	int sPosition = 0;
+	for (int i = 0; i < 8; i++)
+	{
+		MarkB8 = SearchOrderForMark[i][0];
+		MarkB4 = SearchOrderForMark[i][1];
+		tLevel = img->cofAC[MarkB8][MarkB4][0];
+
+		//寻找最后一个非零位存入sPosition
+		sPosition = -1;
+		for (int j = 0; j < 16; j++)
+		{
+			if (*(*tLevel + sPosition + 1) != 0)
+			{
+				sPosition++;
+			}
+			else
+				break;
+		}
+		if (sPosition == -1)	//说明该块为全零，则需要跳过
+		{
+			continue;
+		}
+		else     //该块有满足条件的嵌入位，则停止搜索，锁定该嵌入位
+		{
+			MarkSwitch = 1;		//将标识开关置为1
+			break;
+		}
+	}
+
+	if (MarkSwitch)
+	{
+		if (EnergySwitch)	//修改标识位
+		{
+			if ((*(*tLevel + sPosition)) % 2 == 0)
+			{
+				if ((*(*tLevel + sPosition)) > 0)
+					*(*tLevel + sPosition) -= 1;
+				else
+					*(*tLevel + sPosition) += 1;
+			}
+#ifdef OUTPUT_EMBED_POSITION
+			printf("在第%d帧的第%d个宏块中嵌入密文的第%d位, 标识位坐标: %d, %d \n:", img->number, CurrentMbAddr, SecretPosition, MarkB8, MarkB4);
+#endif
+		}
+		else     //将标识位写入0并回退密文指针
+		{
+			if ((*(*tLevel + sPosition)) % 2 == 1)
+			{
+				*(*tLevel + sPosition) += 1;
+			}
+			else if ((*(*tLevel + sPosition)) % 2 == -1)
+			{
+				*(*tLevel + sPosition) -= 1;
+			}
+			//SecretPosition--;
+			result = 0;
+		}
+	}
+	else     //回退密文指针
+	{
+		//SecretPosition--;
+		result = 0;
+	}
+	return result;
+}
+int RobustEmbed_FrameP(char secretCh)
+{
+	return 0;
+}
+int FragileEmbed_FrameI(char secretCh)
+{
+	int result = 1;
+	Macroblock* myMB = &(img->mb_data[img->current_mb_nr]);
+	if (myMB->mb_type != 9)
+	{
+		result = 0;
+	}
+	else
+	{
+		int DirectionSwitch = 0;
+		int MarkSwitch = 0;
+
+		int myMB_X, myMB_Y;
+		get_mb_block_pos(img->current_mb_nr, &myMB_X, &myMB_Y);
+
+		int b4_x = myMB_X * 4;
+		int b4_y = myMB_Y * 4;
+
+		int dirc = img->ipredmode[b4_x][b4_y];
+		if ((dirc % 2 == 0 && secretCh == '0') || (dirc % 2 == 1 && secretCh == '1'))
+		{
+			DirectionSwitch = 1;
+		}
+
+		/////////////////////////////////////////////////////////////////////
+		//						    标识位搜索							   //
+		/////////////////////////////////////////////////////////////////////
+		int MarkB8, MarkB4;
+		int(*tLevel)[16] = NULL;
+		int sPosition = 0;
+		for (int i = 0; i < 8; i++)
+		{
+			MarkB8 = SearchOrderForMark[i][0];
+			MarkB4 = SearchOrderForMark[i][1];
+			tLevel = img->cofAC[MarkB8][MarkB4][0];
+
+			//寻找最后一个非零位存入sPosition
+			sPosition = -1;
+			for (int j = 0; j < 16; j++)
+			{
+				if (*(*tLevel + sPosition + 1) != 0)
+				{
+					sPosition++;
+				}
+				else
+					break;
+			}
+			if (sPosition == -1)	//说明该块为全零，则需要跳过
+			{
+				continue;
+			}
+			else     //该块有满足条件的嵌入位，则停止搜索，锁定该嵌入位
+			{
+				MarkSwitch = 1;		//将标识开关置为1
+				break;
+			}
+		}
+
+
+		if (MarkSwitch)
+		{
+			if (DirectionSwitch)	//修改标识位
+			{
+				if ((*(*tLevel + sPosition)) % 2 == 0)
+				{
+					if ((*(*tLevel + sPosition)) > 0)
+						*(*tLevel + sPosition) -= 1;
+					else
+						*(*tLevel + sPosition) += 1;
+				}
+#ifdef OUTPUT_EMBED_POSITION
+				printf("在第%d帧的第%d个宏块中嵌入密文的第%d位, 标识位坐标: %d, %d \n:", img->number, CurrentMbAddr, SecretPosition, MarkB8, MarkB4);
+#endif
+				}
+			else     //将标识位写入0并回退密文指针
+			{
+				if ((*(*tLevel + sPosition)) % 2 == 1)
+				{
+					*(*tLevel + sPosition) += 1;
+				}
+				else if ((*(*tLevel + sPosition)) % 2 == -1)
+				{
+					*(*tLevel + sPosition) -= 1;
+				}
+				//SecretPosition--;
+				result = 0;
+			}
+			}
+		else     //回退密文指针
+		{
+			//SecretPosition--;
+			result = 0;
+		}
+	}
+
+	return result;
+}
+int FragileEmbed_FrameP(char secretCh)
+{
+	return 0;
+}
+
 #endif
 /*!
  ************************************************************************

@@ -736,6 +736,7 @@ void tracebits2(const char *trace_str, int len, int info);
 void init_decoding_engine_IPCM(struct img_par *img);
 void readIPCMBytes_CABAC(SyntaxElement *sym, Bitstream *currStream);
 
+#ifdef MY_SECRET_DECODE
 /**************************************************************************
 *函数功能: 通过Zigzag扫描序列将二维方阵转成一维或者将一维数组还原为二维方阵  *
 *width:   二维方阵的边长                                                   *	
@@ -753,5 +754,12 @@ void MyIndexConvert(int* fD, int* sD, int direction);
 
 //返回数组中从左边起的最后一个非零元的位置，-1代表数组全为0
 int GetLastNonZeroPosition(int* tarray, int size);
+
+int RobustExtract_FrameI(char* secretCh);
+int RobustExtract_FrameP(char* secretCh);
+int FragileExtract_FrameI(char* secretCh);
+int FragileExtract_FrameP(char* secretCh);
+
+#endif
 
 #endif

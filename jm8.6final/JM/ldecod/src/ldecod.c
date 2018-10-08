@@ -101,8 +101,8 @@ int SecretBitNum;
 int main(int argc, char **argv)
 {
 
-	FrameDecodeFlgArray[0] = 0;
-	FrameDecodeFlgArray[1] = 1;
+	FrameDecodeFlgArray[0] = 1;
+	FrameDecodeFlgArray[1] = 0;
 	FrameDecodeFlgArray[2] = 0;
 	
 	
